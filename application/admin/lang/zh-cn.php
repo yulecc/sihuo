@@ -209,4 +209,7 @@ return [
     'User Module'                                           => '会员模块',
     'Register'                                              => '注册',
     'User Center'                                           => '会员中心',
+    'Success'                                               => '操作成功',
+    'Company'                                               => '单位',
+    'Mobile'                                                => '手机号',
 ];

@@ -64,7 +64,30 @@ class Admin extends Backend
     }
 
     /**
-     * 查看
+     * 管理员管理
+     *
+     * @ApiTitle    (管理员列表)
+     * @ApiSummary  (管理员列表)
+     * @ApiSector   (管理员管理)
+     * @ApiMethod   (GET)
+     * @ApiRoute    (/api.php/auth/admin/index)
+     * @ApiHeaders  (name=token, type=string, required=true, description="请求的Token")
+     * @ApiParams   (name="username", type="String", required=false, description="用户名")
+     * @ApiParams   (name="autharea_id", type="int", required=false, description="区域权限ID")
+     * @ApiParams   (name="group_id", type="int", required=false, description="权限ID")
+     * @ApiParams   (name="company", type="String", required=false, description="单位名称")
+     * @ApiParams   (name="limit", type="int", required=false, description="每页数量")
+     * @ApiParams   (name="page", type="int", required=false, description="页码")
+     * @ApiReturnParams   (name="code", type="integer", required=true, sample="0")
+     * @ApiReturnParams   (name="msg", type="string", required=true, sample="返回成功")
+     * @ApiReturnParams   (name="data", type="object", sample="{'user_id':'int','user_name':'string','profile':{'email':'string','age':'integer'}}", description="扩展数据返回")
+     * @ApiReturn   ({
+    "code": 1,
+    "msg": "操作成功",
+    "data": []
+    "url": "",
+    "wait": 3
+    })
      */
     public function index()
     {
@@ -92,14 +115,23 @@ class Admin extends Backend
             foreach ($groups as $m => $n) {
                 $adminGroupName[$this->auth->id][$n['id']] = $n['name'];
             }
-            list($where, $sort, $order, $offset, $limit) = $this->buildparams();
+//            list($where, $sort, $order, $offset, $limit) = $this->buildparams();
+            $param = $this->request->param();
+            $limit = $param['limit'];
+            $page = $param['page'];
+            $group_id = $param['group_id'];
+            unset($param['limit'],$param['group_id'],$param['page']);
+            $where = [];
+            if(array_filter($param)){
 
+                $where = array_filter($param);
+            }
             $list = $this->model
                 ->where($where)
                 ->where('id', 'in', $this->childrenAdminIds)
                 ->field(['password', 'salt', 'token'], true)
-                ->order($sort, $order)
-                ->paginate($limit);
+//                ->order($sort, $order)
+                ->paginate($limit,false,['page'=>$page]);
 
             foreach ($list as $k => &$v) {
                 $groups = isset($adminGroupName[$v['id']]) ? $adminGroupName[$v['id']] : [];
@@ -111,23 +143,48 @@ class Admin extends Backend
 
             return json($result);
         }
-        return $this->view->fetch();
+//        return $this->view->fetch();
     }
 
     /**
-     * 添加
+     * 管理员管理
+     *
+     * @ApiTitle    (管理员添加)
+     * @ApiSummary  (管理员添加)
+     * @ApiSector   (管理员管理)
+     * @ApiMethod   (POST)
+     * @ApiRoute    (/api.php/auth/admin/add)
+     * @ApiHeaders  (name=token, type=string, required=true, description="请求的Token")
+     * @ApiParams   (name="username", type="String", required=true, description="用户名")
+     * @ApiParams   (name="group_id", type="string", required=true, description="角色ID,多个ID用，隔开")
+     * @ApiParams   (name="autharea_id", type="int", required=true, description="区域ID")
+     * @ApiParams   (name="company", type="String", required=true, description="单位")
+     * @ApiParams   (name="mobile", type="String", required=true, description="联系电话")
+     * @ApiParams   (name="password", type="string", required=true, description="密码")
+     * @ApiReturnParams   (name="code", type="integer", required=true, sample="0")
+     * @ApiReturnParams   (name="msg", type="string", required=true, sample="返回成功")
+     * @ApiReturnParams   (name="data", type="object", sample="{'user_id':'int','user_name':'string','profile':{'email':'string','age':'integer'}}", description="扩展数据返回")
+     * @ApiReturn   ({
+    "code": 1,
+    "msg": "操作成功",
+    "data": []
+    "url": "",
+    "wait": 3
+    })
      */
     public function add()
     {
         if ($this->request->isPost()) {
-            $this->token();
-            $params = $this->request->post("row/a");
+//            $this->token();
+            $params = $this->request->post();
             if ($params) {
                 Db::startTrans();
                 try {
                     if (!Validate::is($params['password'], '\S{6,16}')) {
                         exception(__("Please input correct password"));
                     }
+                    $group = $params['group_id'];
+                    unset($params['group_id']);
                     $params['salt'] = Random::alnum();
                     $params['password'] = md5(md5($params['password']) . $params['salt']);
                     $params['avatar'] = '/assets/img/avatar.png'; //设置新管理员默认头像。
@@ -135,8 +192,8 @@ class Admin extends Backend
                     if ($result === false) {
                         exception($this->model->getError());
                     }
-                    $group = $this->request->post("group/a");
-
+//                    $group = $this->request->post();
+                    $group = explode(',',$group);
                     //过滤不允许的组别,避免越权
                     $group = array_intersect($this->childrenGroupIds, $group);
                     if (!$group) {
@@ -153,18 +210,44 @@ class Admin extends Backend
                     Db::rollback();
                     $this->error($e->getMessage());
                 }
-                $this->success();
+                $this->success(lang('Success'));
+                exit();
             }
             $this->error(__('Parameter %s can not be empty', ''));
         }
-        return $this->view->fetch();
+//        return $this->view->fetch();
     }
 
     /**
-     * 编辑
+     * 管理员管理
+     *
+     * @ApiTitle    (管理员编辑)
+     * @ApiSummary  (管理员编辑  [GET时候获取用户详情])
+     * @ApiSector   (管理员管理)
+     * @ApiMethod   (POST)
+     * @ApiRoute    (/api.php/auth/admin/edit)
+     * @ApiHeaders  (name=token, type=string, required=true, description="请求的Token")
+     * @ApiParams   (name="id", type="int", required=true, description="需要编辑的ID")
+     * @ApiParams   (name="username", type="String", required=true, description="用户名")
+     * @ApiParams   (name="group_id", type="string", required=true, description="角色ID,多个ID用，隔开")
+     * @ApiParams   (name="autharea_id", type="int", required=true, description="区域ID")
+     * @ApiParams   (name="company", type="String", required=true, description="单位")
+     * @ApiParams   (name="mobile", type="String", required=true, description="联系电话")
+     * @ApiParams   (name="password", type="string", required=true, description="密码 没有则不修改")
+     * @ApiReturnParams   (name="code", type="integer", required=true, sample="0")
+     * @ApiReturnParams   (name="msg", type="string", required=true, sample="返回成功")
+     * @ApiReturnParams   (name="data", type="object", sample="{'user_id':'int','user_name':'string','profile':{'email':'string','age':'integer'}}", description="扩展数据返回")
+     * @ApiReturn   ({
+    "code": 1,
+    "msg": "操作成功",
+    "data": "",
+    "url": "http://www.river.test/api.html",
+    "wait": 3
+    })
      */
     public function edit($ids = null)
     {
+        $ids = $this->request->param('id');
         $row = $this->model->get(['id' => $ids]);
         if (!$row) {
             $this->error(__('No Results were found'));
@@ -173,11 +256,13 @@ class Admin extends Backend
             $this->error(__('You have no permission'));
         }
         if ($this->request->isPost()) {
-            $this->token();
-            $params = $this->request->post("row/a");
+//            $this->token();
+            $params = $this->request->post();
             if ($params) {
                 Db::startTrans();
                 try {
+                    $group = $params['group_id'];
+                    unset($params['group_id']);
                     if ($params['password']) {
                         if (!Validate::is($params['password'], '\S{6,16}')) {
                             exception(__("Please input correct password"));
@@ -191,8 +276,9 @@ class Admin extends Backend
                     $adminValidate = \think\Loader::validate('Admin');
                     $adminValidate->rule([
                         'username' => 'require|regex:\w{3,12}|unique:admin,username,' . $row->id,
-                        'email'    => 'require|email|unique:admin,email,' . $row->id,
+                        'mobile'    => 'require|regex:/^1[3456789]\d{9}$/|unique:admin,mobile,' . $row->id,
                         'password' => 'regex:\S{32}',
+                        'company' => 'require',
                     ]);
                     $result = $row->validate('Admin.edit')->save($params);
                     if ($result === false) {
@@ -202,8 +288,8 @@ class Admin extends Backend
                     // 先移除所有权限
                     model('AuthGroupAccess')->where('uid', $row->id)->delete();
 
-                    $group = $this->request->post("group/a");
-
+//                    $group = $this->request->post("group/a");
+                    $group = explode(',',$group);
                     // 过滤不允许的组别,避免越权
                     $group = array_intersect($this->childrenGroupIds, $group);
                     if (!$group) {
@@ -220,22 +306,43 @@ class Admin extends Backend
                     Db::rollback();
                     $this->error($e->getMessage());
                 }
-                $this->success();
+                $this->success(__('Success'));
+                exit();
             }
             $this->error(__('Parameter %s can not be empty', ''));
+            exit();
         }
         $grouplist = $this->auth->getGroups($row['id']);
         $groupids = [];
         foreach ($grouplist as $k => $v) {
             $groupids[] = $v['id'];
         }
-        $this->view->assign("row", $row);
-        $this->view->assign("groupids", $groupids);
-        return $this->view->fetch();
+
+        $return_data['row'] = $row;
+        $return_data['groupids'] = $groupids;
+        $this->success(lang('Success'),'',$return_data);
     }
 
     /**
-     * 删除
+     * 管理员管理
+     *
+     * @ApiTitle    (管理员删除)
+     * @ApiSummary  (管理员删除)
+     * @ApiSector   (管理员管理)
+     * @ApiMethod   (POST)
+     * @ApiRoute    (/api.php/auth/admin/del)
+     * @ApiHeaders  (name=token, type=string, required=true, description="请求的Token")
+     * @ApiParams   (name="ids", type="int", required=true, description="需要删除的ID")
+     * @ApiReturnParams   (name="code", type="integer", required=true, sample="0")
+     * @ApiReturnParams   (name="msg", type="string", required=true, sample="返回成功")
+     * @ApiReturnParams   (name="data", type="object", sample="{'user_id':'int','user_name':'string','profile':{'email':'string','age':'integer'}}", description="扩展数据返回")
+     * @ApiReturn   ({
+    "code": 1,
+    "msg": "操作成功",
+    "data": "",
+    "url": "http://www.river.test/api.html",
+    "wait": 3
+    })
      */
     public function del($ids = "")
     {
@@ -243,7 +350,7 @@ class Admin extends Backend
             $this->error(__("Invalid parameters"));
         }
         $ids = $ids ? $ids : $this->request->post("ids");
-        if ($ids) {
+        if ($ids && $ids != 1) {
             $ids = array_intersect($this->childrenAdminIds, array_filter(explode(',', $ids)));
             // 避免越权删除管理员
             $childrenGroupIds = $this->childrenGroupIds;
@@ -266,9 +373,11 @@ class Admin extends Backend
                         Db::rollback();
                         $this->error($e->getMessage());
                     }
-                    $this->success();
+                    $this->success(__('Success'));
+                    exit();
                 }
                 $this->error(__('No rows were deleted'));
+                exit();
             }
         }
         $this->error(__('You have no permission'));

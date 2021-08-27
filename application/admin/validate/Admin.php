@@ -12,9 +12,10 @@ class Admin extends Validate
      */
     protected $rule = [
         'username' => 'require|regex:\w{3,12}|unique:admin',
-        'nickname' => 'require',
+//        'nickname' => 'require',
         'password' => 'require|regex:\S{32}',
-        'email'    => 'require|email|unique:admin,email',
+        'mobile'    => 'require|regex:/^1[3456789]\d{9}$/|unique:admin,mobile',
+        'company'    => 'require',
     ];
 
     /**
@@ -33,17 +34,17 @@ class Admin extends Validate
      * 验证场景
      */
     protected $scene = [
-        'add'  => ['username', 'email', 'nickname', 'password'],
-        'edit' => ['username', 'email', 'nickname', 'password'],
+        'add'  => ['username', 'mobile', 'password','company'],
+        'edit' => ['username', 'mobile', 'password','company'],
     ];
 
     public function __construct(array $rules = [], $message = [], $field = [])
     {
         $this->field = [
             'username' => __('Username'),
-            'nickname' => __('Nickname'),
             'password' => __('Password'),
-            'email'    => __('Email'),
+            'mobile'    => __('Mobile'),
+            'company'    => __('Company'),
         ];
         $this->message = array_merge($this->message, [
             'username.regex' => __('Please input correct username'),

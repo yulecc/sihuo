@@ -2,7 +2,9 @@
 
 namespace app\common\controller;
 
+use Aes\Aes;
 use app\admin\library\Auth;
+use app\admin\model\Admin;
 use think\Config;
 use think\Controller;
 use think\Hook;
@@ -141,15 +143,49 @@ class Backend extends Controller
         // 检测是否需要验证登录
         if (!$this->auth->match($this->noNeedLogin)) {
             //检测是否登录
-            if (!$this->auth->isLogin()) {
-                Hook::listen('admin_nologin', $this);
-                $url = Session::get('referer');
-                $url = $url ? $url : $this->request->url();
-                if (in_array($this->request->pathinfo(), ['/', 'index/index'])) {
-                    $this->redirect('index/login', [], 302, ['referer' => $url]);
-                    exit;
+//            if (!$this->auth->isLogin()) {
+//                Hook::listen('admin_nologin', $this);
+//                $url = Session::get('referer');
+//                $url = $url ? $url : $this->request->url();
+//                if (in_array($this->request->pathinfo(), ['/', 'index/index'])) {
+//                    $this->redirect('index/login', [], 302, ['referer' => $url]);
+//                    exit;
+//                }
+//                $this->error(__('Please login first'), url('index/login', ['url' => $url]));
+//            }
+            if(!Session::get('admin')){
+
+                $token = $this->request->server('HTTP_TOKEN', $this->request->param('token', \think\Cookie::get('token')));
+                if (!$token) {
+
+                    $this->error('请登录后操作');
+
+                } else {
+
+                    $aes = new Aes(config('AesKey'));
+                    $dec_data = json_decode($aes->decrypt($token), true);
+                    if (!is_array($dec_data) || count($dec_data) < 1) {
+
+                        $this->error('token有误');
+                        exit();
+
+                    }
+
+                    if ($dec_data['over_time'] < time()) {
+
+                        $this->error('token已过期，请重新登录');
+                        exit();
+                    }
+                    if (!$dec_data['id']) {
+
+                        $this->error('用户ID不能为空');
+                        exit();
+                    }
+                    $admin = Admin::get($dec_data['id']);
+                    Session::set("admin", $admin->toArray());
+
                 }
-                $this->error(__('Please login first'), url('index/login', ['url' => $url]));
+
             }
             // 判断是否需要验证权限
             if (!$this->auth->match($this->noNeedRight)) {
@@ -162,19 +198,19 @@ class Backend extends Controller
         }
 
         // 非选项卡时重定向
-        if (!$this->request->isPost() && !IS_AJAX && !IS_ADDTABS && !IS_DIALOG && input("ref") == 'addtabs') {
-            $url = preg_replace_callback("/([\?|&]+)ref=addtabs(&?)/i", function ($matches) {
-                return $matches[2] == '&' ? $matches[1] : '';
-            }, $this->request->url());
-            if (Config::get('url_domain_deploy')) {
-                if (stripos($url, $this->request->server('SCRIPT_NAME')) === 0) {
-                    $url = substr($url, strlen($this->request->server('SCRIPT_NAME')));
-                }
-                $url = url($url, '', false);
-            }
-            $this->redirect('index/index', [], 302, ['referer' => $url]);
-            exit;
-        }
+//        if (!$this->request->isPost() && !IS_AJAX && !IS_ADDTABS && !IS_DIALOG && input("ref") == 'addtabs') {
+//            $url = preg_replace_callback("/([\?|&]+)ref=addtabs(&?)/i", function ($matches) {
+//                return $matches[2] == '&' ? $matches[1] : '';
+//            }, $this->request->url());
+//            if (Config::get('url_domain_deploy')) {
+//                if (stripos($url, $this->request->server('SCRIPT_NAME')) === 0) {
+//                    $url = substr($url, strlen($this->request->server('SCRIPT_NAME')));
+//                }
+//                $url = url($url, '', false);
+//            }
+//            $this->redirect('index/index', [], 302, ['referer' => $url]);
+//            exit;
+//        }
 
         // 设置面包屑导航数据
         $breadcrumb = [];

@@ -11,6 +11,7 @@ use think\Exception;
 use think\Validate;
 
 /**
+ * @ApiInternal
  * 系统配置
  *
  * @icon   fa fa-cogs

@@ -65,6 +65,7 @@ trait Backend
 
     /**
      * 回收站
+     * @ApiInternal
      */
     public function recyclebin()
     {
@@ -88,6 +89,7 @@ trait Backend
 
     /**
      * 添加
+     * @ApiInternal
      */
     public function add()
     {
@@ -133,6 +135,7 @@ trait Backend
 
     /**
      * 编辑
+     * @ApiInternal
      */
     public function edit($ids = null)
     {
@@ -185,6 +188,7 @@ trait Backend
 
     /**
      * 删除
+     * @ApiInternal
      */
     public function del($ids = "")
     {
@@ -225,6 +229,7 @@ trait Backend
 
     /**
      * 真实删除
+     * @ApiInternal
      */
     public function destroy($ids = "")
     {
@@ -265,6 +270,7 @@ trait Backend
 
     /**
      * 还原
+     * @ApiInternal
      */
     public function restore($ids = "")
     {
@@ -303,6 +309,7 @@ trait Backend
 
     /**
      * 批量更新
+     * @ApiInternal
      */
     public function multi($ids = "")
     {
@@ -349,6 +356,7 @@ trait Backend
 
     /**
      * 导入
+     * @ApiInternal
      */
     protected function import()
     {

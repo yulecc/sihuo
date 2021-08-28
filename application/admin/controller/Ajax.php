@@ -16,6 +16,7 @@ use think\Validate;
 /**
  * Ajax异步请求接口
  * @internal
+ * @ApiInternal
  */
 class Ajax extends Backend
 {

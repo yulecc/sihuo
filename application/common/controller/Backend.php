@@ -16,6 +16,7 @@ use fast\Tree;
 use think\Validate;
 
 /**
+ * @ApiInternal
  * 后台控制器基类
  */
 class Backend extends Controller

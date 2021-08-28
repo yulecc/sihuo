@@ -10,7 +10,7 @@ use think\Hook;
 use think\Validate;
 
 /**
- * 后台首页
+ * 登录
  * @internal
  */
 class Index extends Backend

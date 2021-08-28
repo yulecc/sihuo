@@ -32,9 +32,9 @@ class Admin extends Backend
     {
         parent::_initialize();
         $this->model = model('Admin');
-
-        $this->childrenAdminIds = $this->auth->getChildrenAdminIds($this->auth->isSuperAdmin());
-        $this->childrenGroupIds = $this->auth->getChildrenGroupIds($this->auth->isSuperAdmin());
+        //$this->auth->isSuperAdmin()
+        $this->childrenAdminIds = $this->auth->getChildrenAdminIds(true);
+        $this->childrenGroupIds = $this->auth->getChildrenGroupIds(true);
 
         $groupList = collection(AuthGroup::where('id', 'in', $this->childrenGroupIds)->select())->toArray();
 
@@ -82,11 +82,27 @@ class Admin extends Backend
      * @ApiReturnParams   (name="msg", type="string", required=true, sample="返回成功")
      * @ApiReturnParams   (name="data", type="object", sample="{'user_id':'int','user_name':'string','profile':{'email':'string','age':'integer'}}", description="扩展数据返回")
      * @ApiReturn   ({
-    "code": 1,
-    "msg": "操作成功",
-    "data": []
-    "url": "",
-    "wait": 3
+    "total": 1,
+    "rows": [
+    {
+    "id": 7,
+    "username": "admin2",
+    "nickname": "",
+    "avatar": "/assets/img/avatar.png",
+    "email": "",
+    "loginfailure": 0,
+    "logintime": 1630129435,
+    "loginip": "127.0.0.1",
+    "createtime": 1630128107,
+    "updatetime": 1630129435,
+    "status": "normal",
+    "mobile": "18858585588",
+    "company": "宁波大学",
+    "autharea_id": 2,
+    "groups": "2",
+    "groups_text": "管理员组"
+    }
+    ]
     })
      */
     public function index()
@@ -126,10 +142,17 @@ class Admin extends Backend
 
                 $where = array_filter($param);
             }
+            if($group_id){
+
+                $where['b.group_id'] = $group_id;
+            }
             $list = $this->model
+                ->alias('a')
+                ->join('auth_group_access b','b.uid=a.id','left')
                 ->where($where)
-                ->where('id', 'in', $this->childrenAdminIds)
+                ->where('a.id', 'in', $this->childrenAdminIds)
                 ->field(['password', 'salt', 'token'], true)
+                ->group('a.id')
 //                ->order($sort, $order)
                 ->paginate($limit,false,['page'=>$page]);
 
@@ -385,7 +408,7 @@ class Admin extends Backend
 
     /**
      * 批量更新
-     * @internal
+     *@ApiInternal
      */
     public function multi($ids = "")
     {
@@ -395,6 +418,7 @@ class Admin extends Backend
 
     /**
      * 下拉搜索
+     * @ApiInternal
      */
     public function selectpage()
     {
@@ -402,4 +426,7 @@ class Admin extends Backend
         $this->dataLimitField = 'id';
         return parent::selectpage();
     }
+
+
+
 }

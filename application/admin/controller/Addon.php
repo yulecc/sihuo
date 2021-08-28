@@ -13,7 +13,7 @@ use think\Exception;
 
 /**
  * 插件管理
- *
+ *@ApiInternal
  * @icon   fa fa-cube
  * @remark 可在线安装、卸载、禁用、启用、配置、升级插件，插件升级前请做好备份。
  */

@@ -9,7 +9,7 @@ use think\Db;
 use think\Exception;
 
 /**
- * 角色组
+ * 角色管理
  *
  * @icon   fa fa-group
  * @remark 角色组可以有多个,角色有上下级层级关系,如果子角色有角色组和管理员的权限则可以派生属于自己组别下级的角色组或管理员
@@ -68,12 +68,34 @@ class Group extends Backend
     }
 
     /**
-     * 查看
+     * 角色管理
+     *
+     * @ApiTitle    (角色列表)
+     * @ApiSummary  (角色列表)
+     * @ApiSector   (角色管理)
+     * @ApiMethod   (GET)
+     * @ApiRoute    (/api.php/auth/group/index)
+     * @ApiHeaders  (name=token, type=string, required=true, description="请求的Token")
+     * @ApiReturnParams   (name="code", type="integer", required=true, sample="0")
+     * @ApiReturnParams   (name="msg", type="string", required=true, sample="返回成功")
+     * @ApiReturnParams   (name="data", type="object", sample="{'user_id':'int','user_name':'string','profile':{'email':'string','age':'integer'}}", description="扩展数据返回")
+     * @ApiReturn   ({
+    "code": 1,
+    "msg": "操作成功",
+    "data": []
+    "url": "",
+    "wait": 3
+    })
      */
     public function index()
     {
         if ($this->request->isAjax()) {
             $list = $this->grouplist;
+            foreach ($list as $key=>$value){
+
+                $list[$key]['name'] = str_replace('&nbsp;└','',str_replace(' ','',$value['name']));
+
+            }
             $total = count($list);
             $result = array("total" => $total, "rows" => $list);
 
@@ -83,14 +105,38 @@ class Group extends Backend
     }
 
     /**
-     * 添加
+     * 角色管理
+     *
+     * @ApiTitle    (角色添加)
+     * @ApiSummary  (角色添加)
+     * @ApiSector   (角色管理)
+     * @ApiMethod   (POST)
+     * @ApiRoute    (/api.php/auth/group/add)
+     * @ApiHeaders  (name=token, type=string, required=true, description="请求的Token")
+     * @ApiParams   (name="name", type="String", required=true, description="角色名称")
+     * @ApiParams   (name="rules", type="String", required=true, description="权限列表 用,方式隔开")
+     * @ApiReturnParams   (name="code", type="integer", required=true, sample="0")
+     * @ApiReturnParams   (name="msg", type="string", required=true, sample="返回成功")
+     * @ApiReturnParams   (name="data", type="object", sample="{'user_id':'int','user_name':'string','profile':{'email':'string','age':'integer'}}", description="扩展数据返回")
+     * @ApiReturn   ({
+    "code": 1,
+    "msg": "操作成功",
+    "data": []
+    "url": "",
+    "wait": 3
+    })
      */
     public function add()
     {
         if ($this->request->isPost()) {
-            $this->token();
-            $params = $this->request->post("row/a", [], 'strip_tags');
+//            $this->token();
+            $params = $this->request->post("", [], 'strip_tags');
             $params['rules'] = explode(',', $params['rules']);
+            if(!$params['pid']){
+
+                $params['pid'] = 2; //默认父级ID位2
+
+            }
             if (!in_array($params['pid'], $this->childrenGroupIds)) {
                 $this->error(__('The parent group exceeds permission limit'));
             }
@@ -110,18 +156,41 @@ class Group extends Backend
             $params['rules'] = implode(',', $rules);
             if ($params) {
                 $this->model->create($params);
-                $this->success();
+                $this->success(__('Success'));
+                exit();
             }
             $this->error();
+            exit();
         }
         return $this->view->fetch();
     }
 
     /**
-     * 编辑
+     * 角色管理
+     *
+     * @ApiTitle    (角色编辑)
+     * @ApiSummary  (角色编辑 [GET时候获取角色详情])
+     * @ApiSector   (角色管理)
+     * @ApiMethod   (POST)
+     * @ApiRoute    (/api.php/auth/group/edit)
+     * @ApiHeaders  (name=token, type=string, required=true, description="请求的Token")
+     * @ApiParams   (name="ids", type="int", required=true, description="角色ID")
+     * @ApiParams   (name="name", type="String", required=true, description="角色名称")
+     * @ApiParams   (name="rules", type="String", required=true, description="权限列表 用,方式隔开")
+     * @ApiReturnParams   (name="code", type="integer", required=true, sample="0")
+     * @ApiReturnParams   (name="msg", type="string", required=true, sample="返回成功")
+     * @ApiReturnParams   (name="data", type="object", sample="{'user_id':'int','user_name':'string','profile':{'email':'string','age':'integer'}}", description="扩展数据返回")
+     * @ApiReturn   ({
+    "code": 1,
+    "msg": "操作成功",
+    "data": []
+    "url": "",
+    "wait": 3
+    })
      */
     public function edit($ids = null)
     {
+        $ids = $this->request->param('ids');
         if (!in_array($ids, $this->childrenGroupIds)) {
             $this->error(__('You have no permission'));
         }
@@ -130,9 +199,14 @@ class Group extends Backend
             $this->error(__('No Results were found'));
         }
         if ($this->request->isPost()) {
-            $this->token();
-            $params = $this->request->post("row/a", [], 'strip_tags');
+//            $this->token();
+            $params = $this->request->post("", [], 'strip_tags');
+            unset($params['ids']);
             //父节点不能是非权限内节点
+            if(!$params['pid']){
+
+                $params['pid'] = 2;
+            }
             if (!in_array($params['pid'], $this->childrenGroupIds)) {
                 $this->error(__('The parent group exceeds permission limit'));
             }
@@ -168,24 +242,51 @@ class Group extends Backend
                     }
                     model("AuthGroup")->saveAll($childparams);
                     Db::commit();
-                    $this->success();
+                    $this->success(__('Success'));
+                    exit();
                 } catch (Exception $e) {
                     Db::rollback();
                     $this->error($e->getMessage());
+                    exit();
                 }
             }
             $this->error();
-            return;
+            exit();
         }
-        $this->view->assign("row", $row);
-        return $this->view->fetch();
+//        $this->view->assign("row", $row);
+//        return $this->view->fetch();
+        $this->success(__('Success'),'',$row);
     }
 
     /**
-     * 删除
+     * 角色管理
+     *
+     * @ApiTitle    (角色删除)
+     * @ApiSummary  (角色删除)
+     * @ApiSector   (角色管理)
+     * @ApiMethod   (POST)
+     * @ApiRoute    (/api.php/auth/group/del)
+     * @ApiHeaders  (name=token, type=string, required=true, description="请求的Token")
+     * @ApiParams   (name="ids", type="int", required=true, description="角色ID")
+     * @ApiReturnParams   (name="code", type="integer", required=true, sample="0")
+     * @ApiReturnParams   (name="msg", type="string", required=true, sample="返回成功")
+     * @ApiReturnParams   (name="data", type="object", sample="{'user_id':'int','user_name':'string','profile':{'email':'string','age':'integer'}}", description="扩展数据返回")
+     * @ApiReturn   ({
+    "code": 1,
+    "msg": "操作成功",
+    "data": []
+    "url": "",
+    "wait": 3
+    })
      */
     public function del($ids = "")
     {
+        $ids = $this->request->param('ids');
+        if($ids == 1 || $ids == 2){
+
+            $this->error('无法删除');
+            exit();
+        }
         if (!$this->request->isPost()) {
             $this->error(__("Invalid parameters"));
         }
@@ -221,15 +322,15 @@ class Group extends Backend
             }
             $count = $this->model->where('id', 'in', $ids)->delete();
             if ($count) {
-                $this->success();
+                $this->success(__('Operation completed'));
             }
         }
-        $this->error();
+        $this->error(__('Operation failed'));
     }
 
     /**
+     * @ApiInternal
      * 批量更新
-     * @internal
      */
     public function multi($ids = "")
     {
@@ -237,10 +338,37 @@ class Group extends Backend
         $this->error();
     }
 
+
     /**
-     * 读取角色权限树
+     * 角色管理
      *
-     * @internal
+     * @ApiTitle    (读取角色权限树)
+     * @ApiSummary  (读取角色权限树)
+     * @ApiSector   (角色管理)
+     * @ApiMethod   (POST)
+     * @ApiRoute    (/api.php/auth/group/roletree)
+     * @ApiHeaders  (name=token, type=string, required=true, description="请求的Token")
+     * @ApiParams   (name="pid", type="String", required=true, description="角色组父级ID 默认2")
+     * @ApiReturnParams   (name="code", type="integer", required=true, sample="0")
+     * @ApiReturnParams   (name="msg", type="string", required=true, sample="返回成功")
+     * @ApiReturnParams   (name="data", type="object", sample="{'user_id':'int','user_name':'string','profile':{'email':'string','age':'integer'}}", description="扩展数据返回")
+     * @ApiReturn   ({
+    "code": 1,
+    "msg": "",
+    "data": [
+    {
+    "id": 5,
+    "parent": "#",
+    "text": "权限管理",
+    "type": "menu",
+    "state": {
+    "selected": false
+    }
+    }
+    ],
+    "url": "http://www.river.test/api.html",
+    "wait": 3
+    })
      */
     public function roletree()
     {

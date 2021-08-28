@@ -7,7 +7,7 @@ use app\common\controller\Backend;
 
 /**
  * 管理员日志
- *
+ *@ApiInternal
  * @icon   fa fa-users
  * @remark 管理员可以查看自己所拥有的权限的管理员日志
  */

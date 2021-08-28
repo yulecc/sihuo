@@ -7,7 +7,7 @@ use app\common\library\Auth;
 
 /**
  * 会员管理
- *
+ *@ApiInternal
  * @icon fa fa-user
  */
 class User extends Backend

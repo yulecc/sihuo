@@ -7,7 +7,7 @@ use fast\Tree;
 
 /**
  * 会员规则管理
- *
+ *@ApiInternal
  * @icon fa fa-circle-o
  */
 class Rule extends Backend

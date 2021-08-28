@@ -10,7 +10,7 @@ use think\Exception;
 
 /**
  * 在线命令管理
- *
+ *@ApiInternal
  * @icon fa fa-circle-o
  */
 class Command extends Backend

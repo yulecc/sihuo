@@ -6,7 +6,7 @@ use app\common\controller\Backend;
 
 /**
  * 会员组管理
- *
+ *@ApiInternal
  * @icon fa fa-users
  */
 class Group extends Backend

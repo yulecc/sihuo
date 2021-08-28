@@ -10,7 +10,7 @@ use think\Validate;
 
 /**
  * 个人配置
- *
+ *@ApiInternal
  * @icon fa fa-user
  */
 class Profile extends Backend

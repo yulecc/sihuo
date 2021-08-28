@@ -9,7 +9,7 @@ use think\Cache;
 
 /**
  * 规则管理
- *
+ *@ApiInternal
  * @icon   fa fa-list
  * @remark 规则通常对应一个控制器的方法,同时左侧的菜单栏数据也从规则中体现,通常建议通过控制台进行生成规则节点
  */

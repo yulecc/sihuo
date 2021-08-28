@@ -6,7 +6,7 @@ use app\common\controller\Backend;
 
 /**
  * 附件管理
- *
+ * @ApiInternal
  * @icon   fa fa-circle-o
  * @remark 主要用于管理上传到服务器或第三方存储的数据
  */

@@ -250,7 +250,7 @@ class Admin extends Backend
      * @ApiMethod   (POST)
      * @ApiRoute    (/api.php/auth/admin/edit)
      * @ApiHeaders  (name=token, type=string, required=true, description="请求的Token")
-     * @ApiParams   (name="id", type="int", required=true, description="需要编辑的ID")
+     * @ApiParams   (name="ids", type="int", required=true, description="需要编辑的ID")
      * @ApiParams   (name="username", type="String", required=true, description="用户名")
      * @ApiParams   (name="group_id", type="string", required=true, description="角色ID,多个ID用，隔开")
      * @ApiParams   (name="autharea_id", type="int", required=true, description="区域ID")
@@ -270,7 +270,7 @@ class Admin extends Backend
      */
     public function edit($ids = null)
     {
-        $ids = $this->request->param('id');
+        $ids = $this->request->param('ids');
         $row = $this->model->get(['id' => $ids]);
         if (!$row) {
             $this->error(__('No Results were found'));

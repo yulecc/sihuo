@@ -112,6 +112,7 @@ class Backend extends Controller
      */
     protected $importHeadType = 'comment';
 
+    protected $cache_normal;
     /**
      * 引入后台控制器的traits
      */
@@ -264,6 +265,9 @@ class Backend extends Controller
         $this->assign('auth', $this->auth);
         //渲染管理员对象
         $this->assign('admin', Session::get('admin'));
+
+        $this->cache_normal = get_config_list(false)['normal'];
+
     }
 
     /**

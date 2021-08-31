@@ -224,3 +224,32 @@ EOT;
         return $icon;
     }
 }
+
+if (!function_exists('get_config_list')) {
+
+    function get_config_list($is_cache=true){
+
+        $get_new_config = cache(config('config_list'));
+        //暂时不使用缓存  配置文件实时拿到最新数据
+        if(!$get_new_config || $is_cache || 1==1){
+
+            $config = Db::name('Config')->select();
+            foreach ($config as $key=>$value){
+
+                $get_new_config['group'][$value['group']][$value['id']] = $value;
+                $get_new_config['normal'][$value['id']] = $value;
+
+            }
+            cache(config('config_list'),$get_new_config);
+
+        }
+
+        return $get_new_config;
+
+
+    }
+
+
+}
+
+

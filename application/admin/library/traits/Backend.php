@@ -39,6 +39,7 @@ trait Backend
 
     /**
      * 查看
+     * @ApiInternal
      */
     public function index()
     {
@@ -95,6 +96,10 @@ trait Backend
     {
         if ($this->request->isPost()) {
             $params = $this->request->post("row/a");
+            if(!$params){
+
+                $params =$this->request->post();
+            }
             if ($params) {
                 $params = $this->preExcludeFields($params);
 
@@ -123,12 +128,14 @@ trait Backend
                     $this->error($e->getMessage());
                 }
                 if ($result !== false) {
-                    $this->success();
+                    $this->success(__('Operation completed'));
+                    exit();
                 } else {
                     $this->error(__('No rows were inserted'));
                 }
             }
             $this->error(__('Parameter %s can not be empty', ''));
+            exit();
         }
         return $this->view->fetch();
     }

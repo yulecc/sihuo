@@ -1,0 +1,70 @@
+<form id="edit-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Code')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-code" data-rule="required" class="form-control" name="row[code]" type="text" value="{$row.code|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('River_circle')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-river_circle" class="form-control" name="row[river_circle]" type="text" value="{$row.river_circle|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('River_type')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-river_type" data-rule="required" class="form-control" name="row[river_type]" type="number" value="{$row.river_type|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('River_name')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-river_name" data-rule="required" class="form-control" name="row[river_name]" type="text" value="{$row.river_name|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('River_level')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-river_level" class="form-control" name="row[river_level]" type="number" value="{$row.river_level|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('River_attr')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-river_attr" class="form-control" name="row[river_attr]" type="number" value="{$row.river_attr|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Radmin_id')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-radmin_id" data-rule="required" data-source="radmin/index" class="form-control selectpage" name="row[radmin_id]" type="text" value="{$row.radmin_id|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Circle_code')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-circle_code" class="form-control" name="row[circle_code]" type="text" value="{$row.circle_code|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Circle_name')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-circle_name" class="form-control" name="row[circle_name]" type="text" value="{$row.circle_name|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Tributary')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-tributary" class="form-control" name="row[tributary]" type="text" value="{$row.tributary|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-success btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>

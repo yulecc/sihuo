@@ -201,6 +201,10 @@ class Group extends Backend
         if ($this->request->isPost()) {
 //            $this->token();
             $params = $this->request->post("", [], 'strip_tags');
+            if($params['row']){
+
+                $params = $params['row'];
+            }
             unset($params['ids']);
             //父节点不能是非权限内节点
             if(!$params['pid']){

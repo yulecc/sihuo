@@ -2,10 +2,9 @@
 
 namespace app\admin\model;
 
-use think\Model;
 
 
-class River extends Model
+class River extends BaseModel
 {
 
     
@@ -25,12 +24,29 @@ class River extends Model
 
     // 追加属性
     protected $append = [
-
+        'river_type_text',
+        'river_level_text',
+        'river_attr_text'
     ];
     
 
-    
+    public function getRiverTypeTextAttr($value,$data){
 
+        return $this->cache_normal[$data['river_type']]['value'];
+
+    }
+
+    public function getRiverLevelTextAttr($value,$data){
+
+        return $this->cache_normal[$data['river_level']]['value'];
+
+    }
+
+    public function getRiverAttrTextAttr($value,$data){
+
+        return $this->cache_normal[$data['river_attr']]['value'];
+
+    }
 
 
 

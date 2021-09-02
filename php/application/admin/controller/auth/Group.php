@@ -257,8 +257,8 @@ class Group extends Backend
             $this->error();
             exit();
         }
-//        $this->view->assign("row", $row);
-//        return $this->view->fetch();
+        $this->view->assign("row", $row);
+        return $this->view->fetch();
         $this->success(__('Success'),'',$row);
     }
 

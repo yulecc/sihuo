@@ -2,10 +2,9 @@
 
 namespace app\admin\model;
 
-use think\Model;
 
 
-class Radmin extends Model
+class Radmin extends BaseModel
 {
 
     
@@ -25,13 +24,23 @@ class Radmin extends Model
 
     // 追加属性
     protected $append = [
-
+        'plevel_text',
+        'autharea_text'
     ];
     
 
     
+    public function getPlevelTextAttr($value,$data){
 
+        return $this->cache_normal[$data['plevel']]['value'];
 
+    }
+
+    public function getAuthareaTextAttr($value,$data){
+
+        return $this->cache_normal[$data['autharea']]['value'];
+
+    }
 
 
 

@@ -5,7 +5,7 @@ namespace app\admin\controller;
 use app\common\controller\Backend;
 
 /**
- * 河道管理
+ * 河湖长管理
  *
  * @icon fa fa-circle-o
  */
@@ -25,6 +25,9 @@ class Radmin extends Backend
 
     }
 
+    /**
+     * @ApiInternal
+     */
     public function import()
     {
         parent::import();
@@ -38,11 +41,11 @@ class Radmin extends Backend
 
 
     /**
-     * 河道管理
+     * 河湖长管理
      *
      * @ApiTitle    (河长信息查看)
      * @ApiSummary  (河长信息查看)
-     * @ApiSector   (河道管理)
+     * @ApiSector   (河湖长管理)
      * @ApiMethod   (POST)
      * @ApiRoute    (/api.php/radmin/index)
      * @ApiHeaders  (name=token, type=string, required=true, description="请求的Token")
@@ -104,8 +107,8 @@ class Radmin extends Backend
             foreach ($list as $key=>$row) {
                 
                 $row->getRelation('company')->visible(['name']);
-                $list[$key]['plevel'] = $this->cache_normal[$row['plevel']]['value'];
-                $list[$key]['autharea'] = $this->cache_normal[$row['autharea']]['value'];
+//                $list[$key]['plevel'] = $this->cache_normal[$row['plevel']]['value'];
+//                $list[$key]['autharea'] = $this->cache_normal[$row['autharea']]['value'];
 
             }
 
@@ -118,11 +121,11 @@ class Radmin extends Backend
 
 
     /**
-     * 河道管理
+     * 河湖长管理
      *
      * @ApiTitle    (河长信息添加)
      * @ApiSummary  (河长信息添加)
-     * @ApiSector   (河道管理)
+     * @ApiSector   (河湖长管理)
      * @ApiMethod   (POST)
      * @ApiRoute    (/api.php/radmin/add)
      * @ApiHeaders  (name=token, type=string, required=true, description="请求的Token")
@@ -149,6 +152,7 @@ class Radmin extends Backend
       parent::add();
 
     }
+
 
 
 }

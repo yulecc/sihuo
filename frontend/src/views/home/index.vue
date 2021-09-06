@@ -1,13 +1,13 @@
 <template>
   <div class="home-view">
-    <el-empty description="首页" />
-    <h2 class="title">{{ msg }}</h2>
+    <CesiumContainer></CesiumContainer>
   </div>
 </template>
 
 <script setup>
 import { ref, reactive } from 'vue'
 import store from '@/store'
+import CesiumContainer from '../CesiumContainer/CesiumContainer.vue'
 
 const navList = [
   { name: '排行榜', callback: '' },

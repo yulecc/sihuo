@@ -59,6 +59,9 @@ export default defineConfig(({ command }) => {
         }
       },
       chunkSizeWarningLimit: 500
+    },
+    define: {
+      'global': {}
     }
   }
 })

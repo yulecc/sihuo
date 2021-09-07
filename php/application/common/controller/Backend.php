@@ -113,6 +113,7 @@ class Backend extends Controller
     protected $importHeadType = 'comment';
 
     protected $cache_normal;
+    protected $cache_group;
     /**
      * 引入后台控制器的traits
      */
@@ -267,6 +268,7 @@ class Backend extends Controller
         $this->assign('admin', Session::get('admin'));
 
         $this->cache_normal = get_config_list(false)['normal'];
+        $this->cache_group = get_config_list(false)['group'];
 
     }
 

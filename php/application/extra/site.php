@@ -31,6 +31,7 @@ return array (
     'river_type' => '河湖类型',
     'river_attribute' => '河湖属性',
     'river_level' => '水域等级',
+    'mon_type' => '监测类型',
   ),
   'mail_type' => '1',
   'mail_smtp_host' => 'smtp.qq.com',
@@ -66,4 +67,9 @@ return array (
   'county' => '县（区）级',
   'lake' => '湖泊',
   'reservoir' => '水库',
+  'comprehensive' => '综合水质评价',
+  'phosphorus' => '总磷',
+  'ammonia_nitrogen' => '氨氮',
+  'dissolved_oxygen' => '溶解氧',
+  'permanganate' => '高锰酸盐指数',
 );

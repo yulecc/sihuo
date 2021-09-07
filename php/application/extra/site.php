@@ -32,6 +32,7 @@ return array (
     'river_attribute' => '河湖属性',
     'river_level' => '水域等级',
     'mon_type' => '监测类型',
+    'section_type' => '断面类型',
   ),
   'mail_type' => '1',
   'mail_smtp_host' => 'smtp.qq.com',
@@ -72,4 +73,5 @@ return array (
   'ammonia_nitrogen' => '氨氮',
   'dissolved_oxygen' => '溶解氧',
   'permanganate' => '高锰酸盐指数',
+  'jcdw' => '检测点位',
 );

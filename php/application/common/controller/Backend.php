@@ -15,6 +15,10 @@ use think\Session;
 use fast\Tree;
 use think\Validate;
 
+header("content-Type:application/json;charset=utf-8");
+header("Access-Control-Allow-Origin:*");
+header("Access-Control-Allow-Credentials:true");
+
 /**
  * @ApiInternal
  * 后台控制器基类

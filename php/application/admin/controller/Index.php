@@ -6,7 +6,10 @@ use Aes\Aes;
 use app\admin\model\AdminLog;
 use app\common\controller\Backend;
 use think\Config;
+use think\exception\HttpResponseException;
 use think\Hook;
+use think\Request;
+use think\Response;
 use think\Validate;
 
 /**
@@ -25,8 +28,8 @@ class Index extends Backend
         parent::_initialize();
         //移除HTML标签
         $this->request->filter('trim,strip_tags,htmlspecialchars');
-    }
 
+    }
 
     /**
      * 管理员登录
@@ -55,14 +58,15 @@ class Index extends Backend
      */
     public function login()
     {
-        $url = $this->request->get('url', 'index/index');
+//        $url = $this->request->get('url', 'index/index');
 //        if ($this->auth->isLogin()) {
 //            $this->success(__("You've logged in, do not login again"), $url);
 //        }
         if ($this->request->isPost()) {
-            $username = $this->request->post('username');
-            $password = $this->request->post('password');
-            $keeplogin = $this->request->post('keeplogin');
+
+            $username = $this->request->param('username');
+            $password = $this->request->param('password');
+            $keeplogin = $this->request->param('keeplogin');
 //            $token = $this->request->post('__token__');
             $rule = [
                 'username'  => 'require|length:3,30',
@@ -82,7 +86,7 @@ class Index extends Backend
             $validate = new Validate($rule, [], ['username' => __('Username'), 'password' => __('Password')]);
             $result = $validate->check($data);
             if (!$result) {
-                $this->error($validate->getError(), $url);
+                $this->error($validate->getError());
             }
             AdminLog::setTitle(__('Login'));
             $result = $this->auth->login($username, $password, $keeplogin ? 86400 : 0);
@@ -91,12 +95,12 @@ class Index extends Backend
                 $aes = new Aes(config('AesKey'));
                 $token = $aes->encrypt(json_encode(['id' => $this->auth->id, 'username' => $username, 'over_time' => time() + 7 * 24 * 3600]));
 //                $this->success(__('Login successful'), $url, ['url' => $url, 'id' => $this->auth->id, 'username' => $username, 'avatar' => $this->auth->avatar]);
-                $this->success(__('Login successful'),'',['token'=>$token,'username' => $username, 'avatar' => $this->auth->avatar]);
+                return $this->success(__('Login successful'),['token'=>$token,'username' => $username, 'avatar' => $this->auth->avatar]);
 
             } else {
                 $msg = $this->auth->getError();
                 $msg = $msg ? $msg : __('Username or password is incorrect');
-                $this->error($msg, $url);
+                $this->error($msg);
             }
         }
 

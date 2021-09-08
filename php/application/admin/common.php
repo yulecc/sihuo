@@ -4,6 +4,10 @@ use app\common\model\Category;
 use fast\Form;
 use fast\Tree;
 use think\Db;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 if (!function_exists('build_select')) {
 
@@ -245,6 +249,86 @@ if (!function_exists('get_config_list')) {
         }
 
         return $get_new_config;
+
+
+    }
+
+
+}
+
+
+
+if (!function_exists('download_excel')) {
+
+
+    function download_excel($title, $field_title_name, $file_title, $data)
+    {
+
+
+        $newExcel = new Spreadsheet();  //创建一个新的excel文档
+        try {
+
+            $objSheet = $newExcel->getActiveSheet();  //获取当前操作sheet的对象
+            $objSheet->setTitle($title);  //设置当前sheet的标题
+            //设置第二栏的标题 合并单元格并居中
+            $count_data = Coordinate::stringFromColumnIndex(count($file_title));
+            $newExcel->getActiveSheet()->getColumnDimension('A')->setWidth(50);
+            $newExcel->getActiveSheet()->setCellValue('A1', $field_title_name)->mergeCells("A1:{$count_data}1");//合并单元格
+            $newExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);//垂直居中
+            $newExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);//水平居中
+            //设计头
+            $i = 1;
+            foreach ($file_title as $value) {
+
+                $objSheet->setCellValue(Coordinate::stringFromColumnIndex($i) . 2, $value);
+                //->getColumnDimension(Coordinate::stringFromColumnIndex($i))->setAutoSize(true)
+                $newExcel->getActiveSheet()->getColumnDimension(Coordinate::stringFromColumnIndex($i))->setWidth(30);
+                $i++;
+            }
+            //设置自动筛选
+            $newExcel->getActiveSheet()->setAutoFilter('A2:'.Coordinate::stringFromColumnIndex($i-1).'2');
+            //第二行起，每一行的值,setCellValueExplicit是用来导出文本格式的。
+            $start = 'A3';
+            $end = '';
+            foreach ($data as $k => $val) {
+
+                $i = 1;
+                foreach ($file_title as $key => $value) {
+
+                    $objSheet->setCellValue(Coordinate::stringFromColumnIndex($i) . ($k + 3), $val[$key] . "\t");
+                    $i++;
+                }
+
+            }
+
+            if ($start && $end) {
+
+                $objSheet->getStyle("{$start}:{$end}")->getFill()->setFillType('solid')->getStartColor()->setARGB('D9FFC125');
+
+            }
+            $format = 'Xlsx';
+            // $format只能为 Xlsx 或 Xls
+            if ($format == 'Xlsx') {
+                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            } elseif ($format == 'Xls') {
+                header('Content-Type: application/vnd.ms-excel');
+            }
+            $filename = urlencode( $title . date('YmdHis') . '.' . strtolower($format));
+            header("Content-Disposition: attachment;filename="
+                .$filename);
+            header('Cache-Control: max-age=0');
+            $objWriter = IOFactory::createWriter($newExcel, $format);
+            $objWriter->save('php://output');
+
+
+
+        } catch (\Exception $e) {
+
+            $data['status'] = -1;
+            $data['message'] = $e->getMessage();
+            return $data;
+
+        }
 
 
     }

@@ -5,9 +5,6 @@
  * "error" 或者 2 -- 将规则打开为错误（触发时退出代码为 1）
  */
 module.exports = {
-  globals: {
-    Cesium: true
-  },
   root: true, // 禁用持续查找（root）
   env: {
     browser: true, // 启用浏览器全局变量。

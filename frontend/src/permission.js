@@ -34,11 +34,12 @@ router.beforeEach(async (to, from, next) => {
       if (routes.length) {
         // Permission filtering
         const toRoute = routes[0]
-        if ((toRoute.meta && !toRoute.meta.roles) || (toRoute.meta && toRoute.meta.roles.includes(roles))) {
-          next()
-        } else {
-          next('/401')
-        }
+        // if ((toRoute.meta && !toRoute.meta.roles) || (toRoute.meta && toRoute.meta.roles.includes(roles))) {
+        //   next()
+        // } else {
+        //   next('/401')
+        // }
+        next()
       } else {
         // Otherwise jump to 404
         next('/404')

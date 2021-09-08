@@ -73,12 +73,16 @@ const filterRoutes = () => {
 const filterChildrens = (routers) => {
   const childrens = []
   routers.forEach((item) => {
-    if ((item.meta && !item.meta.roles) || (item.meta && item.meta.roles && item.meta.roles.includes(roles))) {
-      childrens.push(item)
-      if (item.children) {
-        filterChildrens(item.children)
-      }
+    childrens.push(item)
+    if (item.children) {
+      filterChildrens(item.children)
     }
+    // if ((item.meta && !item.meta.roles) || (item.meta && item.meta.roles && item.meta.roles.includes(roles))) {
+    //   childrens.push(item)
+    //   if (item.children) {
+    //     filterChildrens(item.children)
+    //   }
+    // }
   })
   routers.length = 0
   routers.push(...childrens)
@@ -114,6 +118,6 @@ const filterChildrens = (routers) => {
   }
 }
 .el-menu-item.is-active{
-
+  background-color: #1890ff!important;
 }
 </style>

@@ -3,8 +3,11 @@ import { ElMessage } from 'element-plus'
 import { getToken, removeToken, removeRoles, removeName, removeAvatar } from './auth'
 
 const service = axios.create({
-  // baseURL: import.meta.env.VITE_BASE_API,
-  timeout: 10000 // request timeout
+  baseURL: '/api/',
+  timeout: 10000, // request timeout
+  headers: {
+    'Content-Type': 'application/json'
+  }
 })
 
 // 请求拦截器
@@ -30,7 +33,16 @@ service.interceptors.request.use(
 
 // 响应拦截器
 service.interceptors.response.use(
-  (response) => response.data,
+  (response) => {
+    const res = response.data
+    if (res.code !== 1) {
+      ElMessage({
+        type: 'error',
+        message: res.msg
+      })
+    }
+    return res.data
+  },
   (error) => {
     if (error.response && error.response.status === 401) {
       removeToken()

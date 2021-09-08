@@ -1,7 +1,7 @@
 <template>
   <div>
     <main-content-nav-list :nav-list="navList" @navClick="navClick"></main-content-nav-list>
-    <h1>{{ title }}</h1>
+    <h1>{{ title }}3333333333333</h1>
     <router-view v-slot="{ Component }">
       <component :is="Component" />
     </router-view>

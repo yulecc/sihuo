@@ -1,5 +1,6 @@
 import { ElMessage } from 'element-plus'
-import { user_login, user_logout, get_user_info } from '@/api/user'
+import userApi from '@/api/user'
+import { user_logout, get_user_info } from '@/api/user'
 import { getToken, setToken, getRoles, setRoles, getName, setName, getAvatar, setAvatar } from '@/utils/auth'
 
 const state = {
@@ -36,23 +37,18 @@ const actions = {
   // user login
   login({ commit }, userInfo) {
     return new Promise((resolve, reject) => {
-      user_login(userInfo)
+      userApi.user_login(userInfo)
         .then((res) => {
           console.log(11, res)
           if (res.token) {
             commit('SET_TOKEN', res.token)
-            commit('SET_ROLES', res.role)
+            // commit('SET_ROLES', res.role)
             commit('SET_NAME', res.username)
             commit('SET_AVATAR', res.avatar)
-            commit('SET_INTRODUCTION', res.introduction)
+            // commit('SET_INTRODUCTION', res.introduction)
             ElMessage({
               type: 'success',
-              message: res.message
-            })
-          } else {
-            ElMessage({
-              type: 'error',
-              message: res.message
+              message: res.msg
             })
           }
           resolve(res)

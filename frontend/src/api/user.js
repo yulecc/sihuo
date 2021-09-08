@@ -1,16 +1,12 @@
-import request from '../utils/request'
+import baseRequest from './base'
 
-/**
- * 登录
- * @param {*} data
- * @returns
- */
-export function user_login(data) {
-  return request({
-    url: '/api/login',
-    method: 'post',
-    data
-  })
+const baseURL = '/index/'
+const request = (url, ...arg) => baseRequest(baseURL + url, ...arg)
+
+export default {
+  user_login(data) {
+    return request('login', data)
+  }
 }
 
 /**

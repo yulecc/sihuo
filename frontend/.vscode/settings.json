@@ -79,9 +79,12 @@
   },
   "volar.tsPlugin": true,
   "volar.tsPluginStatus": false,
-  "workbench.editorAssociations": {
-    "*.ipynb": "jupyter.notebook.ipynb"
-  },
+  "workbench.editorAssociations": [
+    {
+      "viewType": "jupyter.notebook.ipynb",
+      "filenamePattern": "*.ipynb"
+    }
+  ],
   "vsicons.dontShowNewVersionMessage": true,
   "liveServer.settings.donotVerifyTags": true,
   "workbench.colorCustomizations": {}

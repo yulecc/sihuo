@@ -44,7 +44,7 @@ const passwordType = ref('password')
 
 const param = reactive({
   username: 'admin',
-  password: '123'
+  password: '123456'
 })
 
 const rules = reactive({
@@ -65,9 +65,12 @@ const submitForm = async () => {
   loginFormRef.value.validate((valid) => {
     if (valid) {
       btnLoading.value = true
+      const formdata = new FormData()
+      formdata.append('username', param.username)
+      formdata.append('password', param.password)
       // 访问登录接口
       store
-        .dispatch('user/login', param)
+        .dispatch('user/login', formdata)
         .then(() => {
           router.push('/')
         })

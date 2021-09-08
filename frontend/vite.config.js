@@ -39,9 +39,10 @@ export default defineConfig(({ command }) => {
       open: false,
       proxy: {
         '/api': {
-          target: 'http://admin.xueyueob.cn/api',
+          target: 'http://cjd777.gicp.net/api.php',
           changeOrigin: true,
           ws: true,
+          // http://cjd777.gicp.net/api.php/index/login
           rewrite: (path) => path.replace(new RegExp('^/api'), '')
         }
       }
@@ -59,9 +60,6 @@ export default defineConfig(({ command }) => {
         }
       },
       chunkSizeWarningLimit: 500
-    },
-    define: {
-      'global': {}
     }
   }
 })

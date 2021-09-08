@@ -86,6 +86,38 @@ export const constantRoutes = [
         component: () => import('@/views/xueyue/index.vue'),
         name: 'Xueyue',
         meta: { title: '雪月', icon: 'el-icon-s-flag', roles: ['admin'] }
+      },
+
+      // 水质检测 waterQualityMonitor
+      {
+        path: '/waterQualityMonitorMap',
+        component: () => import('@/views/waterQualityMonitor/map.vue'),
+        name: '水质监测地图',
+        meta: { title: '水质监测地图',
+          icon: 'el-icon-s-flag',
+          roles: ['admin'],
+          belong: ['waterQualityMonitor']
+        }
+      },
+      {
+        path: '/topicImgManage',
+        component: () => import('@/views/waterQualityMonitor/topicImgManage.vue'),
+        name: '专题图管理',
+        meta: { title: '专题图管理',
+          icon: 'el-icon-s-flag',
+          roles: ['admin'],
+          belong: ['waterQualityMonitor']
+        }
+      },
+      {
+        path: '/sectionInformation',
+        component: () => import('@/views/waterQualityMonitor/sectionInformation/index.vue'),
+        name: '水质断面信息',
+        meta: { title: '水质断面信息',
+          icon: 'el-icon-s-flag',
+          roles: ['admin'],
+          belong: ['waterQualityMonitor']
+        }
       }
     ]
   }

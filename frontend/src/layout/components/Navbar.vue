@@ -1,17 +1,17 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
     <div class="layout-slide">
-      <div class="left-nav layout-items-center">
-        <div class="nav-date">{{ nowDate }}</div>
-        <div class="weather-box layout-items-center">
-          <div class="temperature">32 °C</div>
-          <div class="weather">
-            <div class="">雷阵雨</div>
-            <div class="">东北风1-2级</div>
-          </div>
-        </div>
-      </div>
-      <div class="navbar-title">江北区智慧河长监管平台</div>
+      <!--      <div class="left-nav layout-items-center">-->
+      <!--        <div class="nav-date">{{ nowDate }}</div>-->
+      <!--        <div class="weather-box layout-items-center">-->
+      <!--          <div class="temperature">32 °C</div>-->
+      <!--          <div class="weather">-->
+      <!--            <div class="">雷阵雨</div>-->
+      <!--            <div class="">东北风1-2级</div>-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--      <div class="navbar-title">江北区智慧河长监管平台</div>-->
       <!--    <Hamburger class="hamburger-container" :is-active="opened" @toggleClick="toggleSideBar" />-->
       <!--    <Breadcrumb class="breadcrumb-container" />-->
       <div class="right-menu">
@@ -20,33 +20,20 @@
         <!--      </el-tooltip>-->
         <div class="layout-items-center">
           <div class="lock-icon"></div>
-          <div class="user-icon"></div>
-          <!--        <el-dropdown class="avatar-container right-menu-item">-->
-          <!--          <div class="avatar-wrapper">-->
-          <!--            <img :src="avatar ? avatar : '/img/logo.png'" class="user-avatar" />-->
-          <!--            <i class="el-icon-caret-bottom" />-->
-          <!--          </div>-->
-          <!--          <template #dropdown>-->
-          <!--            <el-dropdown-menu>-->
-          <!--              <el-dropdown-item @click="$router.push('/')">首页</el-dropdown-item>-->
-          <!--              <el-dropdown-item divided @click="editPossword">修改密码</el-dropdown-item>-->
-          <!--              <el-dropdown-item divided @click="loginOut">登出</el-dropdown-item>-->
-          <!--            </el-dropdown-menu>-->
-          <!--          </template>-->
-          <!--        </el-dropdown>-->
-          <!--        <el-dropdown class="avatar-container right-menu-item">-->
-          <!--          <div class="avatar-wrapper">-->
-          <!--            <img :src="avatar ? avatar : '/img/logo.png'" class="user-avatar" />-->
-          <!--            <i class="el-icon-caret-bottom" />-->
-          <!--          </div>-->
-          <!--          <template #dropdown>-->
-          <!--            <el-dropdown-menu>-->
-          <!--              <el-dropdown-item @click="$router.push('/')">首页</el-dropdown-item>-->
-          <!--              <el-dropdown-item divided @click="editPossword">修改密码</el-dropdown-item>-->
-          <!--              <el-dropdown-item divided @click="loginOut">登出</el-dropdown-item>-->
-          <!--            </el-dropdown-menu>-->
-          <!--          </template>-->
-          <!--        </el-dropdown>-->
+
+          <el-dropdown class="avatar-container right-menu-item">
+            <div class="avatar-wrapper">
+              <div class="user-icon"></div>
+              <i class="el-icon-caret-bottom" />
+            </div>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item @click="$router.push('/')">首页</el-dropdown-item>
+                <el-dropdown-item divided @click="editPossword">修改密码</el-dropdown-item>
+                <el-dropdown-item divided @click="loginOut">登出</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </div>
         <div class="nav-list layout-items-center">
           <div
@@ -64,7 +51,7 @@
 
 <script setup>
 import { computed, reactive, ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import dayjs from 'dayjs'
@@ -73,6 +60,7 @@ import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import Screenfull from '@/components/Screenfull/index.vue'
 
 const router = useRouter()
+const route = useRoute()
 const store = useStore()
 const opened = computed(() => store.state.app.sidebar.opened)
 const avatar = computed(() => store.state.user.avatar)
@@ -81,11 +69,16 @@ onMounted(() => {
   setInterval(() => {
     nowDate.value = dayjs().format('YYYY年MM月DD日 HH:mm:ss')
   }, 1000)
+  console.log(JSON.parse(JSON.stringify(route)))
+  const belong = route.meta?.belong[0]
+  const target = navList.list.find(value => value.value === belong)
+  checkNav(target)
 })
 
 const navList = reactive({
   list: [
     { name: '总览', value: 'overview' },
+    { name: '水质监测', value: 'waterQualityMonitor' },
     { name: '问题发现', value: 'test1' },
     { name: '河道管理', value: 'test2' },
     { name: '排口排查', value: 'test3' }
@@ -129,7 +122,7 @@ const loginOut = () => {
 }
 
 .navbar-title{
-  background-color: rgba(15, 41, 91, 1);
+  //background-color: rgba(15, 41, 91, 1);
   //width: 657px;
   height: 91px;
   line-height: 91px;
@@ -150,8 +143,9 @@ const loginOut = () => {
   overflow: hidden;
   line-height: 50px;
   height: 180px;
-  background: url("/img/bg.svg");
+  //background: url("/img/bg.svg");
   color: #fff;
+  border-bottom: none;
 
   .nav-list{
     margin-top: 20px;

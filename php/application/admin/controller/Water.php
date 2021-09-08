@@ -17,7 +17,7 @@ use think\exception\PDOException;
  */
 class Water extends Backend
 {
-    
+
     /**
      * Water模型对象
      * @var \app\admin\model\Water
@@ -143,7 +143,7 @@ class Water extends Backend
                 foreach ($temp as $k => $v) {
                     if (isset($fieldArr[$k]) && $k !== '') {
 
-                        if(in_array($fieldArr[$k],['river_type','river_attribute','people','section_type'])){
+                        if(in_array($fieldArr[$k],['river_type','river_attribute','people','section_type','control_level'])){
 
                             $cache_group_value = array_column($this->cache_group[$fieldArr[$k]],'value');
                             if(in_array($v,$cache_group_value)){
@@ -223,67 +223,182 @@ class Water extends Backend
      * @ApiMethod   (POST)
      * @ApiRoute    (/api.php/water/section_index)
      * @ApiHeaders  (name=token, type=string, required=true, description="请求的Token")
-     * @ApiParams   (name="mon_source", type="String", required=false, description="监测来源")
-     * @ApiParams   (name="mon_category", type="int", required=false, description="监测类别")
-     * @ApiParams   (name="mon_time", type="datetime", required=false, description="监测时间 2个时间之前以~分割 2021-10-01~2021-10-02")
+     * @ApiParams   (name="river_name", type="String", required=false, description="河道名称")
+     * @ApiParams   (name="point_number", type="String", required=false, description="点位编号")
+     * @ApiParams   (name="point_name", type="String", required=false, description="点位名称")
+     * @ApiParams   (name="water_category", type="String", required=false, description="水质类别")
+     * @ApiParams   (name="river_type", type="int", required=false, description="类型 多个以,隔开")
+     * @ApiParams   (name="section_type", type="int", required=false, description="断面类型")
+     * @ApiParams   (name="people", type="int", required=false, description="河湖长等级")
+     * @ApiParams   (name="control_level", type="int", required=false, description="控制方式")
      * @ApiParams   (name="limit", type="int", required=true, description="每页数量")
      * @ApiParams   (name="page", type="int", required=true, description="页码")
      * @ApiReturnParams   (name="code", type="integer", required=true, sample="0")
      * @ApiReturnParams   (name="msg", type="string", required=true, sample="返回成功")
      * @ApiReturnParams   (name="data", type="object", sample="{'user_id':'int','user_name':'string','profile':{'email':'string','age':'integer'}}", description="扩展数据返回")
-     * @ApiReturn   ({
-    "total": 2,
-    "rows": [
-    {
-    "id": 2,
-    "mon_source": "遥感",
-    "mon_category": 51,
-    "mon_time": "2021-09-07 11:11:00",
-    "mon_images": "",
-    "updatetime": 1630997782,
-    "createtime": 1630997782,
-    "mon_category_text": "高锰酸盐指数"
-    },
-    {
-    "id": 3,
-    "mon_source": "遥感",
-    "mon_category": 50,
-    "mon_time": "2021-09-07 11:11:00",
-    "mon_images": "[\"https:\\/\\/fanyi-cdn.cdn.bcebos.com\\/static\\/translation\\/img\\/header\\/logo_e835568.png\",\"https:\\/\\/fanyi-cdn.cdn.bcebos.com\\/static\\/translation\\/img\\/header\\/logo_e835568.png\"]",
-    "updatetime": 1630998063,
-    "createtime": 1630998063,
-    "mon_category_text": "溶解氧"
-    }
-    ]
-    })
+     * @ApiReturn   ()
      */
     public function section_index()
     {
 
         $param = $this->request->param();
         $where = [];
-        if($param['mon_source']){
+        if($param['river_name']){
 
-            $where['mon_source'] = $param['mon_source'];
+            $where['river_name'] = ['like','%'.$param['river_name'].'%'];
         }
-        if($param['mon_category']){
+        if($param['point_number']){
 
-            $where['mon_category'] = $param['mon_category'];
+            $where['point_number'] = ['like','%'.$param['point_number'].'%'];
         }
-        if($param['mon_time']){
+        if($param['point_name']){
 
-            $mon_time = explode('~',$param['mon_time']);
-            $where['mon_time'] = ['between',[$mon_time[0],$mon_time[1]]];
+            $where['point_name'] = ['like','%'.$param['point_name'].'%'];
         }
+        if($param['water_category']){
+
+            $where['water_category'] = $param['water_category'];
+        }
+        if($param['river_type']){
+
+            $where['river_type'] = ['in',$param['river_type']];
+        }
+        if($param['people']){
+
+            $where['people'] = $param['people'];
+        }
+
+        if($param['section_type']){
+
+            $where['section_type'] = $param['section_type'];
+        }
+
+        if($param['control_level']){
+
+            $where['control_level'] = $param['control_level'];
+        }
+
+        if($param['river_attribute']){
+
+            $where['river_attribute'] = $param['river_attribute'];
+        }
+
         $limit = $param['limit'];
         $page = $param['page'];
         $rows = $this->model->where($where)->page($page,$limit)->select();
         $total =  $this->model->where($where)->count();
-        $source = $this->model->field('id,mon_source')->group('mon_source')->select();
-        $mon_category = $this->cache_group['mon_type'];
-        $result = array("total" => $total, "rows" => $rows,'source'=>$source,'category'=>$mon_category);
+        $list['river_type'] = $this->cache_group['river_type'];
+        $list['river_attribute'] = $this->cache_group['river_attribute'];
+        $list['section_type'] = $this->cache_group['section_type'];
+        $list['people'] = $this->cache_group['people'];
+        $list['control_level'] = $this->cache_group['control_level'];
+        $result = array("total" => $total, "rows" => $rows,'search_list'=>$list);
         return json($result);
     }
+
+    /**
+     * 水质监测
+     *
+     * @ApiTitle    (断面信息导出)
+     * @ApiSummary  (断面信息导出)
+     * @ApiSector   (水质监测)
+     * @ApiMethod   (POST)
+     * @ApiRoute    (/api.php/water/download)
+     * @ApiHeaders  (name=token, type=string, required=true, description="请求的Token")
+     * @ApiParams   (name="river_name", type="String", required=false, description="河道名称")
+     * @ApiParams   (name="point_number", type="String", required=false, description="点位编号")
+     * @ApiParams   (name="point_name", type="String", required=false, description="点位名称")
+     * @ApiParams   (name="water_category", type="String", required=false, description="水质类别")
+     * @ApiParams   (name="river_type", type="int", required=false, description="类型 多个以,隔开")
+     * @ApiParams   (name="section_type", type="int", required=false, description="断面类型")
+     * @ApiParams   (name="people", type="int", required=false, description="河湖长等级")
+     * @ApiParams   (name="control_level", type="int", required=false, description="控制方式")
+     * @ApiReturnParams   (name="code", type="integer", required=true, sample="0")
+     * @ApiReturnParams   (name="msg", type="string", required=true, sample="返回成功")
+     * @ApiReturnParams   (name="data", type="object", sample="{'user_id':'int','user_name':'string','profile':{'email':'string','age':'integer'}}", description="扩展数据返回")
+     * @ApiReturn   ()
+     */
+    public function download(){
+
+        $param = $this->request->param();
+        $where = [];
+        if($param['river_name']){
+
+            $where['river_name'] = ['like','%'.$param['river_name'].'%'];
+        }
+        if($param['point_number']){
+
+            $where['point_number'] = ['like','%'.$param['point_number'].'%'];
+        }
+        if($param['point_name']){
+
+            $where['point_name'] = ['like','%'.$param['point_name'].'%'];
+        }
+        if($param['water_category']){
+
+            $where['water_category'] = $param['water_category'];
+        }
+        if($param['river_type']){
+
+            $where['river_type'] = ['in',$param['river_type']];
+        }
+        if($param['people']){
+
+            $where['people'] = $param['people'];
+        }
+
+        if($param['section_type']){
+
+            $where['section_type'] = $param['section_type'];
+        }
+
+        if($param['control_level']){
+
+            $where['control_level'] = $param['control_level'];
+        }
+
+        if($param['river_attribute']){
+
+            $where['river_attribute'] = $param['river_attribute'];
+        }
+        //导入文件首行类型,默认是注释,如果需要使用字段名称请使用name
+        $importHeadType = isset($this->importHeadType) ? $this->importHeadType : 'comment';
+
+        $table = $this->model->getQuery()->getTable();
+        $database = \think\Config::get('database.database');
+        $fieldArr = [];
+        $list = db()->query("SELECT COLUMN_NAME,COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = ? AND TABLE_SCHEMA = ?", [$table, $database]);
+        foreach ($list as $k => $v) {
+
+            if($v['COLUMN_COMMENT']){
+
+                if ($importHeadType == 'comment') {
+                    $file_tile[$v['COLUMN_NAME']] = $v['COLUMN_COMMENT'];
+                } else {
+                    $file_tile[$v['COLUMN_NAME']] = $v['COLUMN_NAME'];
+                }
+            }
+
+        }
+
+        $arr = ['river_type','river_attribute','section_type','people','control_level'];
+        foreach ($file_tile as $k=>$value){
+
+            if(in_array($k,$arr)){
+
+                $file_tile[$k.'_text'] = $value;
+                unset($file_tile[$k]);
+
+            }
+
+        }
+
+        $rows = $this->model->where($where)->select();
+        download_excel('断面信息', '断面信息', $file_tile, $rows);
+
+
+    }
+
 
 
 }

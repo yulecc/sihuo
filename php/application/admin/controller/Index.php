@@ -95,7 +95,7 @@ class Index extends Backend
                 $aes = new Aes(config('AesKey'));
                 $token = $aes->encrypt(json_encode(['id' => $this->auth->id, 'username' => $username, 'over_time' => time() + 7 * 24 * 3600]));
 //                $this->success(__('Login successful'), $url, ['url' => $url, 'id' => $this->auth->id, 'username' => $username, 'avatar' => $this->auth->avatar]);
-                return $this->success(__('Login successful'),'',['token'=>$token,'username' => $username, 'avatar' => $this->auth->avatar]);
+                return $this->success(__('Login successful'),['token'=>$token,'username' => $username, 'avatar' => $this->auth->avatar]);
 
             } else {
                 $msg = $this->auth->getError();

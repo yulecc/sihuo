@@ -33,6 +33,7 @@ return array (
     'river_level' => '水域等级',
     'mon_type' => '监测类型',
     'section_type' => '断面类型',
+    'control_level' => '控制级别',
   ),
   'mail_type' => '1',
   'mail_smtp_host' => 'smtp.qq.com',
@@ -74,4 +75,6 @@ return array (
   'dissolved_oxygen' => '溶解氧',
   'permanganate' => '高锰酸盐指数',
   'jcdw' => '检测点位',
+  'people_controller' => '人工控制',
+  'county_controller' => '县控',
 );

@@ -255,12 +255,17 @@
                                                                     <span class="label label-success pull-right noneedlogin">登</span>
                                                             </span>
                         </a>
-                                                <a href="javascript:;" data-id="18" class="list-group-item">专题图片信息添加                            <span class="tag">
+                                                <a href="javascript:;" data-id="18" class="list-group-item">断面信息导出                            <span class="tag">
                                                                     <span class="label label-danger pull-right">鉴</span>
                                                                     <span class="label label-success pull-right noneedlogin">登</span>
                                                             </span>
                         </a>
-                                                <a href="javascript:;" data-id="19" class="list-group-item">专题图片信息查看                            <span class="tag">
+                                                <a href="javascript:;" data-id="19" class="list-group-item">专题图片信息添加                            <span class="tag">
+                                                                    <span class="label label-danger pull-right">鉴</span>
+                                                                    <span class="label label-success pull-right noneedlogin">登</span>
+                                                            </span>
+                        </a>
+                                                <a href="javascript:;" data-id="20" class="list-group-item">专题图片信息查看                            <span class="tag">
                                                                     <span class="label label-danger pull-right">鉴</span>
                                                                     <span class="label label-success pull-right noneedlogin">登</span>
                                                             </span>
@@ -268,11 +273,11 @@
                                             </div>
                                         <a href="#其他" class="list-group-item" data-toggle="collapse" data-parent="#sidebar">其他  <i class="fa fa-caret-down"></i></a>
                     <div class="child collapse" id="其他">
-                                                <a href="javascript:;" data-id="20" class="list-group-item">按组别获取配置文件信息                            <span class="tag">
+                                                <a href="javascript:;" data-id="21" class="list-group-item">按组别获取配置文件信息                            <span class="tag">
                                                                     <span class="label label-success pull-right noneedlogin">登</span>
                                                             </span>
                         </a>
-                                                <a href="javascript:;" data-id="21" class="list-group-item">图片上传                            <span class="tag">
+                                                <a href="javascript:;" data-id="22" class="list-group-item">图片上传                            <span class="tag">
                                                                     <span class="label label-success pull-right noneedlogin">登</span>
                                                             </span>
                         </a>
@@ -3854,22 +3859,52 @@
                                                 </thead>
                                                 <tbody>
                                                                                                         <tr>
-                                                        <td>mon_source</td>
+                                                        <td>river_name</td>
                                                         <td>String</td>
                                                         <td>否</td>
-                                                        <td>监测来源</td>
+                                                        <td>河道名称</td>
                                                     </tr>
                                                                                                         <tr>
-                                                        <td>mon_category</td>
+                                                        <td>point_number</td>
+                                                        <td>String</td>
+                                                        <td>否</td>
+                                                        <td>点位编号</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td>point_name</td>
+                                                        <td>String</td>
+                                                        <td>否</td>
+                                                        <td>点位名称</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td>water_category</td>
+                                                        <td>String</td>
+                                                        <td>否</td>
+                                                        <td>水质类别</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td>river_type</td>
                                                         <td>int</td>
                                                         <td>否</td>
-                                                        <td>监测类别</td>
+                                                        <td>类型 多个以,隔开</td>
                                                     </tr>
                                                                                                         <tr>
-                                                        <td>mon_time</td>
-                                                        <td>datetime</td>
+                                                        <td>section_type</td>
+                                                        <td>int</td>
                                                         <td>否</td>
-                                                        <td>监测时间 2个时间之前以~分割 2021-10-01~2021-10-02</td>
+                                                        <td>断面类型</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td>people</td>
+                                                        <td>int</td>
+                                                        <td>否</td>
+                                                        <td>河湖长等级</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td>control_level</td>
+                                                        <td>int</td>
+                                                        <td>否</td>
+                                                        <td>控制方式</td>
                                                     </tr>
                                                                                                         <tr>
                                                         <td>limit</td>
@@ -3917,16 +3952,36 @@
                                                 <div class="panel-body">
                                                     <form enctype="application/x-www-form-urlencoded" role="form" action="/api.php/water/section_index" method="POST" name="form17" id="form17">
                                                                                                                 <div class="form-group">
-                                                            <label class="control-label" for="mon_source">mon_source</label>
-                                                            <input type="String" class="form-control input-sm" id="mon_source"  placeholder="监测来源" name="mon_source">
+                                                            <label class="control-label" for="river_name">river_name</label>
+                                                            <input type="String" class="form-control input-sm" id="river_name"  placeholder="河道名称" name="river_name">
                                                         </div>
                                                                                                                 <div class="form-group">
-                                                            <label class="control-label" for="mon_category">mon_category</label>
-                                                            <input type="int" class="form-control input-sm" id="mon_category"  placeholder="监测类别" name="mon_category">
+                                                            <label class="control-label" for="point_number">point_number</label>
+                                                            <input type="String" class="form-control input-sm" id="point_number"  placeholder="点位编号" name="point_number">
                                                         </div>
                                                                                                                 <div class="form-group">
-                                                            <label class="control-label" for="mon_time">mon_time</label>
-                                                            <input type="datetime" class="form-control input-sm" id="mon_time"  placeholder="监测时间 2个时间之前以~分割 2021-10-01~2021-10-02" name="mon_time">
+                                                            <label class="control-label" for="point_name">point_name</label>
+                                                            <input type="String" class="form-control input-sm" id="point_name"  placeholder="点位名称" name="point_name">
+                                                        </div>
+                                                                                                                <div class="form-group">
+                                                            <label class="control-label" for="water_category">water_category</label>
+                                                            <input type="String" class="form-control input-sm" id="water_category"  placeholder="水质类别" name="water_category">
+                                                        </div>
+                                                                                                                <div class="form-group">
+                                                            <label class="control-label" for="river_type">river_type</label>
+                                                            <input type="int" class="form-control input-sm" id="river_type"  placeholder="类型 多个以,隔开" name="river_type">
+                                                        </div>
+                                                                                                                <div class="form-group">
+                                                            <label class="control-label" for="section_type">section_type</label>
+                                                            <input type="int" class="form-control input-sm" id="section_type"  placeholder="断面类型" name="section_type">
+                                                        </div>
+                                                                                                                <div class="form-group">
+                                                            <label class="control-label" for="people">people</label>
+                                                            <input type="int" class="form-control input-sm" id="people"  placeholder="河湖长等级" name="people">
+                                                        </div>
+                                                                                                                <div class="form-group">
+                                                            <label class="control-label" for="control_level">control_level</label>
+                                                            <input type="int" class="form-control input-sm" id="control_level"  placeholder="控制方式" name="control_level">
                                                         </div>
                                                                                                                 <div class="form-group">
                                                             <label class="control-label" for="limit">limit</label>
@@ -3992,31 +4047,7 @@
                                 <div class="tab-pane" id="sample17">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <pre id="sample_response17">{
-    "total": 2,
-    "rows": [
-    {
-    "id": 2,
-    "mon_source": "遥感",
-    "mon_category": 51,
-    "mon_time": "2021-09-07 11:11:00",
-    "mon_images": "",
-    "updatetime": 1630997782,
-    "createtime": 1630997782,
-    "mon_category_text": "高锰酸盐指数"
-    },
-    {
-    "id": 3,
-    "mon_source": "遥感",
-    "mon_category": 50,
-    "mon_time": "2021-09-07 11:11:00",
-    "mon_images": "[\"https:\\/\\/fanyi-cdn.cdn.bcebos.com\\/static\\/translation\\/img\\/header\\/logo_e835568.png\",\"https:\\/\\/fanyi-cdn.cdn.bcebos.com\\/static\\/translation\\/img\\/header\\/logo_e835568.png\"]",
-    "updatetime": 1630998063,
-    "createtime": 1630998063,
-    "mon_category_text": "溶解氧"
-    }
-    ]
-    }</pre>
+                                            <pre id="sample_response17">无</pre>
                                         </div>
                                     </div>
                                 </div><!-- #sample -->
@@ -4029,7 +4060,7 @@
                     <div class="panel-heading" id="heading-18">
                         <h4 class="panel-title">
                             <span class="label label-primary">POST</span>
-                            <a data-toggle="collapse" data-parent="#accordion18" href="#collapseOne18"> 专题图片信息添加 <span class="text-muted">/api.php/watermon/add</span></a>
+                            <a data-toggle="collapse" data-parent="#accordion18" href="#collapseOne18"> 断面信息导出 <span class="text-muted">/api.php/water/download</span></a>
                         </h4>
                     </div>
                     <div id="collapseOne18" class="panel-collapse collapse">
@@ -4046,6 +4077,260 @@
                             <div class="tab-content">
 
                                 <div class="tab-pane active" id="info18">
+                                    <div class="well">
+                                        断面信息导出                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading"><strong>权限</strong></div>
+                                        <div class="panel-body">
+                                            <table class="table table-hover">
+                                                <tbody>
+                                                <tr>
+                                                    <td>登录</td>
+                                                    <td>是</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>鉴权</td>
+                                                    <td>是</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading"><strong>Headers</strong></div>
+                                        <div class="panel-body">
+                                                                                        <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>名称</th>
+                                                        <th>类型</th>
+                                                        <th>必选</th>
+                                                        <th>描述</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                                                                        <tr>
+                                                        <td>token</td>
+                                                        <td>string</td>
+                                                        <td>是</td>
+                                                        <td>请求的Token</td>
+                                                    </tr>
+                                                                                                    </tbody>
+                                            </table>
+                                                                                    </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading"><strong>参数</strong></div>
+                                        <div class="panel-body">
+                                                                                        <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>名称</th>
+                                                        <th>类型</th>
+                                                        <th>必选</th>
+                                                        <th>描述</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                                                                        <tr>
+                                                        <td>river_name</td>
+                                                        <td>String</td>
+                                                        <td>否</td>
+                                                        <td>河道名称</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td>point_number</td>
+                                                        <td>String</td>
+                                                        <td>否</td>
+                                                        <td>点位编号</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td>point_name</td>
+                                                        <td>String</td>
+                                                        <td>否</td>
+                                                        <td>点位名称</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td>water_category</td>
+                                                        <td>String</td>
+                                                        <td>否</td>
+                                                        <td>水质类别</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td>river_type</td>
+                                                        <td>int</td>
+                                                        <td>否</td>
+                                                        <td>类型 多个以,隔开</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td>section_type</td>
+                                                        <td>int</td>
+                                                        <td>否</td>
+                                                        <td>断面类型</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td>people</td>
+                                                        <td>int</td>
+                                                        <td>否</td>
+                                                        <td>河湖长等级</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td>control_level</td>
+                                                        <td>int</td>
+                                                        <td>否</td>
+                                                        <td>控制方式</td>
+                                                    </tr>
+                                                                                                    </tbody>
+                                            </table>
+                                                                                    </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading"><strong>正文</strong></div>
+                                        <div class="panel-body">
+                                            无                                        </div>
+                                    </div>
+                                </div><!-- #info -->
+
+                                <div class="tab-pane" id="sandbox18">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                                                                        <div class="panel panel-default">
+                                                <div class="panel-heading"><strong>Headers</strong></div>
+                                                <div class="panel-body">
+                                                    <div class="headers">
+                                                                                                                <div class="form-group">
+                                                            <label class="control-label" for="token">token</label>
+                                                            <input type="string" class="form-control input-sm" id="token" required placeholder="请求的Token - Ex: " name="token">
+                                                        </div>
+                                                                                                            </div>
+                                                </div>
+                                            </div>
+                                                                                        <div class="panel panel-default">
+                                                <div class="panel-heading"><strong>参数</strong>
+                                                <div class="pull-right">
+                                                    <a href="javascript:" class="btn btn-xs btn-info btn-append">追加</a>
+                                                </div>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <form enctype="application/x-www-form-urlencoded" role="form" action="/api.php/water/download" method="POST" name="form18" id="form18">
+                                                                                                                <div class="form-group">
+                                                            <label class="control-label" for="river_name">river_name</label>
+                                                            <input type="String" class="form-control input-sm" id="river_name"  placeholder="河道名称" name="river_name">
+                                                        </div>
+                                                                                                                <div class="form-group">
+                                                            <label class="control-label" for="point_number">point_number</label>
+                                                            <input type="String" class="form-control input-sm" id="point_number"  placeholder="点位编号" name="point_number">
+                                                        </div>
+                                                                                                                <div class="form-group">
+                                                            <label class="control-label" for="point_name">point_name</label>
+                                                            <input type="String" class="form-control input-sm" id="point_name"  placeholder="点位名称" name="point_name">
+                                                        </div>
+                                                                                                                <div class="form-group">
+                                                            <label class="control-label" for="water_category">water_category</label>
+                                                            <input type="String" class="form-control input-sm" id="water_category"  placeholder="水质类别" name="water_category">
+                                                        </div>
+                                                                                                                <div class="form-group">
+                                                            <label class="control-label" for="river_type">river_type</label>
+                                                            <input type="int" class="form-control input-sm" id="river_type"  placeholder="类型 多个以,隔开" name="river_type">
+                                                        </div>
+                                                                                                                <div class="form-group">
+                                                            <label class="control-label" for="section_type">section_type</label>
+                                                            <input type="int" class="form-control input-sm" id="section_type"  placeholder="断面类型" name="section_type">
+                                                        </div>
+                                                                                                                <div class="form-group">
+                                                            <label class="control-label" for="people">people</label>
+                                                            <input type="int" class="form-control input-sm" id="people"  placeholder="河湖长等级" name="people">
+                                                        </div>
+                                                                                                                <div class="form-group">
+                                                            <label class="control-label" for="control_level">control_level</label>
+                                                            <input type="int" class="form-control input-sm" id="control_level"  placeholder="控制方式" name="control_level">
+                                                        </div>
+                                                                                                                <div class="form-group form-group-submit">
+                                                            <button type="submit" class="btn btn-success send" rel="18">提交</button>
+                                                            <button type="reset" class="btn btn-info" rel="18">重置</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading"><strong>响应输出</strong></div>
+                                                <div class="panel-body">
+                                                    <div class="row">
+                                                        <div class="col-md-12" style="overflow-x:auto">
+                                                            <pre id="response_headers18"></pre>
+                                                            <pre id="response18"></pre>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading"><strong>返回参数</strong></div>
+                                                <div class="panel-body">
+                                                                                                        <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>名称</th>
+                                                                <th>类型</th>
+                                                                <th>描述</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                                                                                        <tr>
+                                                                <td>code</td>
+                                                                <td>integer</td>
+                                                                <td></td>
+                                                            </tr>
+                                                                                                                        <tr>
+                                                                <td>msg</td>
+                                                                <td>string</td>
+                                                                <td></td>
+                                                            </tr>
+                                                                                                                        <tr>
+                                                                <td>data</td>
+                                                                <td>object</td>
+                                                                <td>扩展数据返回</td>
+                                                            </tr>
+                                                                                                                    </tbody>
+                                                    </table>
+                                                                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- #sandbox -->
+
+                                <div class="tab-pane" id="sample18">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <pre id="sample_response18">无</pre>
+                                        </div>
+                                    </div>
+                                </div><!-- #sample -->
+
+                            </div><!-- .tab-content -->
+                        </div>
+                    </div>
+                </div>
+                                <div class="panel panel-default">
+                    <div class="panel-heading" id="heading-19">
+                        <h4 class="panel-title">
+                            <span class="label label-primary">POST</span>
+                            <a data-toggle="collapse" data-parent="#accordion19" href="#collapseOne19"> 专题图片信息添加 <span class="text-muted">/api.php/watermon/add</span></a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne19" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" id="doctab19">
+                                <li class="active"><a href="#info19" data-toggle="tab">基础信息</a></li>
+                                <li><a href="#sandbox19" data-toggle="tab">在线测试</a></li>
+                                <li><a href="#sample19" data-toggle="tab">返回示例</a></li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+
+                                <div class="tab-pane active" id="info19">
                                     <div class="well">
                                         其中mon_category去请求"api.php/whole/get_group_list?type=mon_type"                                    </div>
                                     <div class="panel panel-default">
@@ -4136,7 +4421,7 @@
                                     </div>
                                 </div><!-- #info -->
 
-                                <div class="tab-pane" id="sandbox18">
+                                <div class="tab-pane" id="sandbox19">
                                     <div class="row">
                                         <div class="col-md-12">
                                                                                         <div class="panel panel-default">
@@ -4157,7 +4442,7 @@
                                                 </div>
                                                 </div>
                                                 <div class="panel-body">
-                                                    <form enctype="application/x-www-form-urlencoded" role="form" action="/api.php/watermon/add" method="POST" name="form18" id="form18">
+                                                    <form enctype="application/x-www-form-urlencoded" role="form" action="/api.php/watermon/add" method="POST" name="form19" id="form19">
                                                                                                                 <div class="form-group">
                                                             <label class="control-label" for="mon_source">mon_source</label>
                                                             <input type="String" class="form-control input-sm" id="mon_source" required placeholder="监测来源" name="mon_source">
@@ -4175,8 +4460,8 @@
                                                             <input type="json" class="form-control input-sm" id="mon_images"  placeholder="图片 以json形式传递" name="mon_images">
                                                         </div>
                                                                                                                 <div class="form-group form-group-submit">
-                                                            <button type="submit" class="btn btn-success send" rel="18">提交</button>
-                                                            <button type="reset" class="btn btn-info" rel="18">重置</button>
+                                                            <button type="submit" class="btn btn-success send" rel="19">提交</button>
+                                                            <button type="reset" class="btn btn-info" rel="19">重置</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -4186,8 +4471,8 @@
                                                 <div class="panel-body">
                                                     <div class="row">
                                                         <div class="col-md-12" style="overflow-x:auto">
-                                                            <pre id="response_headers18"></pre>
-                                                            <pre id="response18"></pre>
+                                                            <pre id="response_headers19"></pre>
+                                                            <pre id="response19"></pre>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -4227,10 +4512,10 @@
                                     </div>
                                 </div><!-- #sandbox -->
 
-                                <div class="tab-pane" id="sample18">
+                                <div class="tab-pane" id="sample19">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <pre id="sample_response18">{
+                                            <pre id="sample_response19">{
     "code": 1,
     "msg": "操作成功!",
     "data": "",
@@ -4246,26 +4531,26 @@
                     </div>
                 </div>
                                 <div class="panel panel-default">
-                    <div class="panel-heading" id="heading-19">
+                    <div class="panel-heading" id="heading-20">
                         <h4 class="panel-title">
                             <span class="label label-primary">POST</span>
-                            <a data-toggle="collapse" data-parent="#accordion19" href="#collapseOne19"> 专题图片信息查看 <span class="text-muted">/api.php/watermon/index</span></a>
+                            <a data-toggle="collapse" data-parent="#accordion20" href="#collapseOne20"> 专题图片信息查看 <span class="text-muted">/api.php/watermon/index</span></a>
                         </h4>
                     </div>
-                    <div id="collapseOne19" class="panel-collapse collapse">
+                    <div id="collapseOne20" class="panel-collapse collapse">
                         <div class="panel-body">
 
                             <!-- Nav tabs -->
-                            <ul class="nav nav-tabs" id="doctab19">
-                                <li class="active"><a href="#info19" data-toggle="tab">基础信息</a></li>
-                                <li><a href="#sandbox19" data-toggle="tab">在线测试</a></li>
-                                <li><a href="#sample19" data-toggle="tab">返回示例</a></li>
+                            <ul class="nav nav-tabs" id="doctab20">
+                                <li class="active"><a href="#info20" data-toggle="tab">基础信息</a></li>
+                                <li><a href="#sandbox20" data-toggle="tab">在线测试</a></li>
+                                <li><a href="#sample20" data-toggle="tab">返回示例</a></li>
                             </ul>
 
                             <!-- Tab panes -->
                             <div class="tab-content">
 
-                                <div class="tab-pane active" id="info19">
+                                <div class="tab-pane active" id="info20">
                                     <div class="well">
                                         专题图片信息查看                                    </div>
                                     <div class="panel panel-default">
@@ -4362,7 +4647,7 @@
                                     </div>
                                 </div><!-- #info -->
 
-                                <div class="tab-pane" id="sandbox19">
+                                <div class="tab-pane" id="sandbox20">
                                     <div class="row">
                                         <div class="col-md-12">
                                                                                         <div class="panel panel-default">
@@ -4383,7 +4668,7 @@
                                                 </div>
                                                 </div>
                                                 <div class="panel-body">
-                                                    <form enctype="application/x-www-form-urlencoded" role="form" action="/api.php/watermon/index" method="POST" name="form19" id="form19">
+                                                    <form enctype="application/x-www-form-urlencoded" role="form" action="/api.php/watermon/index" method="POST" name="form20" id="form20">
                                                                                                                 <div class="form-group">
                                                             <label class="control-label" for="mon_source">mon_source</label>
                                                             <input type="String" class="form-control input-sm" id="mon_source"  placeholder="监测来源" name="mon_source">
@@ -4405,8 +4690,8 @@
                                                             <input type="int" class="form-control input-sm" id="page" required placeholder="页码" name="page">
                                                         </div>
                                                                                                                 <div class="form-group form-group-submit">
-                                                            <button type="submit" class="btn btn-success send" rel="19">提交</button>
-                                                            <button type="reset" class="btn btn-info" rel="19">重置</button>
+                                                            <button type="submit" class="btn btn-success send" rel="20">提交</button>
+                                                            <button type="reset" class="btn btn-info" rel="20">重置</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -4416,8 +4701,8 @@
                                                 <div class="panel-body">
                                                     <div class="row">
                                                         <div class="col-md-12" style="overflow-x:auto">
-                                                            <pre id="response_headers19"></pre>
-                                                            <pre id="response19"></pre>
+                                                            <pre id="response_headers20"></pre>
+                                                            <pre id="response20"></pre>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -4457,10 +4742,10 @@
                                     </div>
                                 </div><!-- #sandbox -->
 
-                                <div class="tab-pane" id="sample19">
+                                <div class="tab-pane" id="sample20">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <pre id="sample_response19">{
+                                            <pre id="sample_response20">{
     "total": 2,
     "rows": [
     {
@@ -4496,26 +4781,26 @@
                                 <h2>其他</h2>
                 <hr>
                                 <div class="panel panel-default">
-                    <div class="panel-heading" id="heading-20">
+                    <div class="panel-heading" id="heading-21">
                         <h4 class="panel-title">
                             <span class="label label-primary">POST</span>
-                            <a data-toggle="collapse" data-parent="#accordion20" href="#collapseOne20"> 按组别获取配置文件信息 <span class="text-muted">/api.php/whole/get_group_list</span></a>
+                            <a data-toggle="collapse" data-parent="#accordion21" href="#collapseOne21"> 按组别获取配置文件信息 <span class="text-muted">/api.php/whole/get_group_list</span></a>
                         </h4>
                     </div>
-                    <div id="collapseOne20" class="panel-collapse collapse">
+                    <div id="collapseOne21" class="panel-collapse collapse">
                         <div class="panel-body">
 
                             <!-- Nav tabs -->
-                            <ul class="nav nav-tabs" id="doctab20">
-                                <li class="active"><a href="#info20" data-toggle="tab">基础信息</a></li>
-                                <li><a href="#sandbox20" data-toggle="tab">在线测试</a></li>
-                                <li><a href="#sample20" data-toggle="tab">返回示例</a></li>
+                            <ul class="nav nav-tabs" id="doctab21">
+                                <li class="active"><a href="#info21" data-toggle="tab">基础信息</a></li>
+                                <li><a href="#sandbox21" data-toggle="tab">在线测试</a></li>
+                                <li><a href="#sample21" data-toggle="tab">返回示例</a></li>
                             </ul>
 
                             <!-- Tab panes -->
                             <div class="tab-content">
 
-                                <div class="tab-pane active" id="info20">
+                                <div class="tab-pane active" id="info21">
                                     <div class="well">
                                         按组别获取配置文件信息                                    </div>
                                     <div class="panel panel-default">
@@ -4588,7 +4873,7 @@
                                     </div>
                                 </div><!-- #info -->
 
-                                <div class="tab-pane" id="sandbox20">
+                                <div class="tab-pane" id="sandbox21">
                                     <div class="row">
                                         <div class="col-md-12">
                                                                                         <div class="panel panel-default">
@@ -4609,14 +4894,14 @@
                                                 </div>
                                                 </div>
                                                 <div class="panel-body">
-                                                    <form enctype="application/x-www-form-urlencoded" role="form" action="/api.php/whole/get_group_list" method="POST" name="form20" id="form20">
+                                                    <form enctype="application/x-www-form-urlencoded" role="form" action="/api.php/whole/get_group_list" method="POST" name="form21" id="form21">
                                                                                                                 <div class="form-group">
                                                             <label class="control-label" for="type">type</label>
                                                             <input type="String" class="form-control input-sm" id="type" required placeholder="类型" name="type">
                                                         </div>
                                                                                                                 <div class="form-group form-group-submit">
-                                                            <button type="submit" class="btn btn-success send" rel="20">提交</button>
-                                                            <button type="reset" class="btn btn-info" rel="20">重置</button>
+                                                            <button type="submit" class="btn btn-success send" rel="21">提交</button>
+                                                            <button type="reset" class="btn btn-info" rel="21">重置</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -4626,8 +4911,8 @@
                                                 <div class="panel-body">
                                                     <div class="row">
                                                         <div class="col-md-12" style="overflow-x:auto">
-                                                            <pre id="response_headers20"></pre>
-                                                            <pre id="response20"></pre>
+                                                            <pre id="response_headers21"></pre>
+                                                            <pre id="response21"></pre>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -4657,10 +4942,10 @@
                                     </div>
                                 </div><!-- #sandbox -->
 
-                                <div class="tab-pane" id="sample20">
+                                <div class="tab-pane" id="sample21">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <pre id="sample_response20">{
+                                            <pre id="sample_response21">{
     "47": {
     "id": 47,
     "name": "comprehensive",
@@ -4684,26 +4969,26 @@
                     </div>
                 </div>
                                 <div class="panel panel-default">
-                    <div class="panel-heading" id="heading-21">
+                    <div class="panel-heading" id="heading-22">
                         <h4 class="panel-title">
                             <span class="label label-primary">POST</span>
-                            <a data-toggle="collapse" data-parent="#accordion21" href="#collapseOne21"> 图片上传 <span class="text-muted">/api.php/whole/imgUpload</span></a>
+                            <a data-toggle="collapse" data-parent="#accordion22" href="#collapseOne22"> 图片上传 <span class="text-muted">/api.php/whole/imgUpload</span></a>
                         </h4>
                     </div>
-                    <div id="collapseOne21" class="panel-collapse collapse">
+                    <div id="collapseOne22" class="panel-collapse collapse">
                         <div class="panel-body">
 
                             <!-- Nav tabs -->
-                            <ul class="nav nav-tabs" id="doctab21">
-                                <li class="active"><a href="#info21" data-toggle="tab">基础信息</a></li>
-                                <li><a href="#sandbox21" data-toggle="tab">在线测试</a></li>
-                                <li><a href="#sample21" data-toggle="tab">返回示例</a></li>
+                            <ul class="nav nav-tabs" id="doctab22">
+                                <li class="active"><a href="#info22" data-toggle="tab">基础信息</a></li>
+                                <li><a href="#sandbox22" data-toggle="tab">在线测试</a></li>
+                                <li><a href="#sample22" data-toggle="tab">返回示例</a></li>
                             </ul>
 
                             <!-- Tab panes -->
                             <div class="tab-content">
 
-                                <div class="tab-pane active" id="info21">
+                                <div class="tab-pane active" id="info22">
                                     <div class="well">
                                         图片上传                                    </div>
                                     <div class="panel panel-default">
@@ -4776,7 +5061,7 @@
                                     </div>
                                 </div><!-- #info -->
 
-                                <div class="tab-pane" id="sandbox21">
+                                <div class="tab-pane" id="sandbox22">
                                     <div class="row">
                                         <div class="col-md-12">
                                                                                         <div class="panel panel-default">
@@ -4797,14 +5082,14 @@
                                                 </div>
                                                 </div>
                                                 <div class="panel-body">
-                                                    <form enctype="application/x-www-form-urlencoded" role="form" action="/api.php/whole/imgUpload" method="POST" name="form21" id="form21">
+                                                    <form enctype="application/x-www-form-urlencoded" role="form" action="/api.php/whole/imgUpload" method="POST" name="form22" id="form22">
                                                                                                                 <div class="form-group">
                                                             <label class="control-label" for="file">file</label>
                                                             <input type="file" class="form-control input-sm" id="file" required placeholder="图片路径" name="file">
                                                         </div>
                                                                                                                 <div class="form-group form-group-submit">
-                                                            <button type="submit" class="btn btn-success send" rel="21">提交</button>
-                                                            <button type="reset" class="btn btn-info" rel="21">重置</button>
+                                                            <button type="submit" class="btn btn-success send" rel="22">提交</button>
+                                                            <button type="reset" class="btn btn-info" rel="22">重置</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -4814,8 +5099,8 @@
                                                 <div class="panel-body">
                                                     <div class="row">
                                                         <div class="col-md-12" style="overflow-x:auto">
-                                                            <pre id="response_headers21"></pre>
-                                                            <pre id="response21"></pre>
+                                                            <pre id="response_headers22"></pre>
+                                                            <pre id="response22"></pre>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -4845,10 +5130,10 @@
                                     </div>
                                 </div><!-- #sandbox -->
 
-                                <div class="tab-pane" id="sample21">
+                                <div class="tab-pane" id="sample22">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <pre id="sample_response21">{
+                                            <pre id="sample_response22">{
     "47": {
     "id": 47,
     "name": "comprehensive",
@@ -5058,7 +5343,7 @@
 
                 </div>
                 <div class="col-md-6" align="right">
-                    Generated on 2021-09-07 21:58:21 <a href="./" target="_blank">我的网站</a>
+                    Generated on 2021-09-08 12:34:02 <a href="./" target="_blank">我的网站</a>
                 </div>
             </div>
 

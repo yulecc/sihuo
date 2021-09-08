@@ -5,7 +5,7 @@ namespace app\admin\model;
 use think\Model;
 
 
-class Water extends Model
+class Water extends BaseModel
 {
 
     
@@ -25,7 +25,12 @@ class Water extends Model
 
     // 追加属性
     protected $append = [
-        'water_category_text'
+        'water_category_text',
+        'river_type_text',
+        'river_attribute_text',
+        'section_type_text',
+        'people_text',
+        'control_level_text'
     ];
     
 
@@ -43,6 +48,34 @@ class Water extends Model
         return isset($list[$value]) ? $list[$value] : '';
     }
 
+    public function getRiverTypeTextAttr($value,$data){
+
+        return $this->cache_normal[$data['river_type']]['value'];
+
+    }
+
+    public function getRiverAttributeTextAttr($value,$data){
+
+        return $this->cache_normal[$data['river_attribute']]['value'];
+
+    }
+
+    public function getSectionTypeTextAttr($value,$data){
+
+        return $this->cache_normal[$data['section_type']]['value'];
+
+    }
+
+    public function getPeopleTextAttr($value,$data){
+
+        return $this->cache_normal[$data['people']]['value'];
+
+    }
+    public function getControlLevelTextAttr($value,$data){
+
+        return $this->cache_normal[$data['control_level']]['value'];
+
+    }
 
 
 

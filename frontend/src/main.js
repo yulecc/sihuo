@@ -3,6 +3,7 @@ import { createApp } from 'vue'
 import 'vue-global-api'
 
 import ElementPlus from 'element-plus'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import 'element-plus/packages/theme-chalk/src/base.scss'
 import 'element-plus/lib/theme-chalk/index.css'
 import './styles/index.scss' // global css
@@ -26,7 +27,9 @@ const app = createApp(App)
 app.use(VueCesium, {
   cesiumPath: './Cesium/Cesium.js',
   accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIyYTkxMWEyMi0wM2M0LTRhYWQtYTc3OS0zM2Y5NDA5NDZkZmMiLCJpZCI6NjI2ODcsImlhdCI6MTYyNzM2Nzc5N30.4LIbSsJlfe-1XVRBQSv1j8bmfM4BazvlLE0F3HK9xzs'
-}).use(router).use(store).use(ElementPlus).use(directives).mount('#app')
+}).use(router).use(store).use(ElementPlus, {
+  locale: zhCn
+}).use(directives).mount('#app')
 
 app.config.globalProperties.$DateFormat = DateFormat
 

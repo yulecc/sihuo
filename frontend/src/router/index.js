@@ -101,7 +101,7 @@ export const constantRoutes = [
       },
       {
         path: '/topicImgManage',
-        component: () => import('@/views/waterQualityMonitor/topicImgManage.vue'),
+        component: () => import('@/views/waterQualityMonitor/topicImgManage/index.vue'),
         name: '专题图管理',
         meta: { title: '专题图管理',
           icon: 'el-icon-s-flag',

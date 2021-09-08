@@ -29,6 +29,12 @@
 </template>
 
 <script setup>
+// const props = defineProps({
+//   tableData1: {
+//     type: 'array',
+//     default: () => []
+//   }
+// })
 const item = {
   type: '河道',
   code: 'jb0158',

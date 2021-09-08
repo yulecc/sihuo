@@ -1,6 +1,6 @@
 <template>
   <div class="home-view">
-    <main-content-nav-list :nav-list="navList" @navClick="navClick"></main-content-nav-list>
+    <!--    <main-content-nav-list :nav-list="navList" @navClick="navClick"></main-content-nav-list>-->
     <CesiumContainer></CesiumContainer>
   </div>
 </template>

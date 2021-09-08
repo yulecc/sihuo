@@ -98,16 +98,16 @@
       <el-dialog
         v-model="importDate.visible"
         title="请先选择日期"
-        width="50%"
+        width="300px"
       >
-        <el-date-picker v-model="importDate.value" type="date" placeholder="选择日期">
-          <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="closeDialog">取 消</el-button>
-              <el-button type="primary" @click="submitImportDate">确 定</el-button>
-            </span>
-          </template>
-        </el-date-picker></el-dialog>
+        <el-date-picker v-model="importDate.value" type="date" placeholder="选择日期"></el-date-picker>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="closeDialog">取 消</el-button>
+            <el-button type="primary" @click="submitImportDate">确 定</el-button>
+          </span>
+        </template>
+      </el-dialog>
     </div>
     <div class="table-main">
       <table-list></table-list>
@@ -117,6 +117,7 @@
 
 <script setup>
 import TableList from './tableList.vue'
+import { ElMessage } from 'element-plus'
 
 // form
 const defaultFormData = {
@@ -434,6 +435,7 @@ const onClear = () => {
   formData.value = { ...defaultFormData }
 }
 const onImport = () => {
+  importDate.visible = true
   console.log('submit!')
 }
 const onExport = () => {
@@ -450,7 +452,9 @@ const closeDialog = () => {
 }
 const submitImportDate = () => {
   if (!importDate.value) {
-
+    ElMessage.warning('请选择日期')
+  } else {
+    closeDialog()
   }
 }
 

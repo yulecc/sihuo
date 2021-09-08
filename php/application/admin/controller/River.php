@@ -11,7 +11,7 @@ use app\common\controller\Backend;
  */
 class River extends Backend
 {
-    
+
     /**
      * River模型对象
      * @var \app\admin\model\River
@@ -32,8 +32,6 @@ class River extends Backend
     {
         parent::import();
     }
-
-
 
 
     /**
@@ -111,52 +109,52 @@ class River extends Backend
 //            list($where, $sort, $order, $offset, $limit) = $this->buildparams();
             $param = $this->request->param();
             $where = [];
-            if($param['river_type']){
+            if ($param['river_type']) {
 
-                $where['river_type'] = ['in',$param['river_type']];
+                $where['river_type'] = ['in', $param['river_type']];
             }
-            if($param['river_name']){
+            if ($param['river_name']) {
 
-                $where['river_name'] = ['like','%'.$param['river_name'].'%'];
+                $where['river_name'] = ['like', '%' . $param['river_name'] . '%'];
             }
-            if($param['river_attr']){
+            if ($param['river_attr']) {
 
-                $where['river_attr'] = ['in',$param['river_attr']];
+                $where['river_attr'] = ['in', $param['river_attr']];
             }
-            if($param['radmin_name']){
+            if ($param['radmin_name']) {
 
-                $where['radmin.name'] = ['like','%'.$param['radmin_name'].'%'];
+                $where['radmin.name'] = ['like', '%' . $param['radmin_name'] . '%'];
             }
-            if($param['radmin_plevel']){
+            if ($param['radmin_plevel']) {
 
                 $where['radmin.plevel'] = $param['radmin_plevel'];
             }
 
-            if($param['river_level']){
+            if ($param['river_level']) {
 
                 $where['river_level'] = $param['river_level'];
             }
 
-            if($param['circle_code']){
+            if ($param['circle_code']) {
 
                 $where['circle_code'] = $param['circle_code'];
             }
 
-            if($param['tributary']){
+            if ($param['tributary']) {
 
-                $where['tributary'] = ['like','%'.$param['tributary'].'%'];
+                $where['tributary'] = ['like', '%' . $param['tributary'] . '%'];
 
             }
 
             $limit = $param['limit'];
             $page = $param['page'];
             $list = $this->model
-                    ->with(['radmin'])
-                    ->where($where)
+                ->with(['radmin'])
+                ->where($where)
 //                    ->order($sort, $order)
-                    ->paginate($limit,false,['page'=>$page]);
+                ->paginate($limit, false, ['page' => $page]);
 
-            foreach ($list as $key=>$row) {
+            foreach ($list as $key => $row) {
 
 //                $list[$key]['river_type'] = $this->cache_normal[$row['river_type']]['value'];
 //                $list[$key]['river_level'] = $this->cache_normal[$row['river_level']]['value'];
@@ -165,9 +163,9 @@ class River extends Backend
 
             $result = array("total" => $list->total(), "rows" => $list->items());
 
-            return json($result);
+            $this->success('操作成功', $result);
         }
-        return $this->view->fetch();
+//        return $this->view->fetch();
     }
 
 

@@ -150,7 +150,7 @@ class Index extends Backend
             'auth/rule' => __('Menu'),
             'general'   => ['new', 'purple'],
         ], $this->view->site['fixedpage']);
-        $this->success(lang('Success'),'',$menulist);
+        $this->success(lang('Success'),$menulist);
 //        $action = $this->request->request('action');
 //        if ($this->request->isPost()) {
 //            if ($action == 'refreshmenu') {

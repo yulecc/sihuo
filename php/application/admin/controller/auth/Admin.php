@@ -164,7 +164,7 @@ class Admin extends Backend
             unset($v);
             $result = array("total" => $list->total(), "rows" => $list->items());
 
-            return json($result);
+            $this->success('操作成功',$result);
         }
 //        return $this->view->fetch();
     }

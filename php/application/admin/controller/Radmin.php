@@ -114,9 +114,9 @@ class Radmin extends Backend
 
             $result = array("total" => $list->total(), "rows" => $list->items());
 
-            return json($result);
+            $this->success('获取成功',$result);
         }
-        return $this->view->fetch();
+//        return $this->view->fetch();
     }
 
 

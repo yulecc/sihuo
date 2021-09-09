@@ -64,6 +64,7 @@ const route = useRoute()
 const store = useStore()
 const opened = computed(() => store.state.app.sidebar.opened)
 const avatar = computed(() => store.state.user.avatar)
+const navbarHeight = computed(() => store.state.ui.NavBarHeight)
 
 onMounted(() => {
   setInterval(() => {
@@ -91,6 +92,11 @@ const nowDate = ref('')
 const checkNav = (nav) => {
   navList.checked = nav.name
   store.dispatch('app/setCheckNav', nav.value)
+  if (nav.name === '总览') {
+    store.dispatch('ui/setSliderMenuState', false)
+  } else {
+    store.dispatch('ui/setSliderMenuState', true)
+  }
 }
 
 const toggleSideBar = () => {
@@ -142,10 +148,11 @@ const loginOut = () => {
 .navbar {
   overflow: hidden;
   line-height: 50px;
-  height: 180px;
-  background: url("/img/bg.svg");
+  height: v-bind('navbarHeight');
+  //background: url("/img/bg.svg");
   color: #fff;
   border-bottom: none;
+  z-index: 999;
 
   .nav-list{
     margin-top: 20px;

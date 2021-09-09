@@ -1,7 +1,7 @@
 <template>
   <div class="home-view">
     <!--    <main-content-nav-list :nav-list="navList" @navClick="navClick"></main-content-nav-list>-->
-    <h2>主页</h2>
+    <CesiumContainer></CesiumContainer>
   </div>
 </template>
 
@@ -26,23 +26,19 @@ const navClick = (nav) => {
 }
 
 onMounted(() => {
+  store.dispatch('ui/setSliderMenuState', false)
 })
 
-const msg = ref('Welcome to the management system')
-
-const h2Style = reactive({
-  color: '#435448'
-})
-
-setInterval(() => {
-  h2Style.color = '#' + Math.random().toString(16).slice(-6)
-}, 1000)
 </script>
 
 <style lang="scss" scoped>
 .home-view {
+  position: absolute;
+  top:0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
   .title {
-    color: v-bind('h2Style.color');
     text-align: center;
   }
 }

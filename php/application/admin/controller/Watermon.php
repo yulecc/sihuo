@@ -137,7 +137,7 @@ class Watermon extends Backend
         $source = $this->model->field('id,mon_source')->group('mon_source')->select();
         $mon_category = $this->cache_group['mon_type'];
         $result = array("total" => $total, "rows" => $rows,'source'=>$source,'category'=>$mon_category);
-        return json($result);
+        $this->success('获取成功',$result);
     }
 
 

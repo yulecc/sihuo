@@ -47,9 +47,7 @@ class Whole extends Backend
             exit();
         }
 
-        return json($this->cache_group[$type]);
-
-
+        $this->success('获取成功',$this->cache_group[$type]);
     }
 
     /**
@@ -97,11 +95,11 @@ class Whole extends Backend
                     'filepath' => $imgpath,
                 ];
 
-                $this->success('上传成功','',$data);
+                $this->success('上传成功',$data);
 
             } else {
                 // 上传失败获取错误信息
-                $this->error('上传失败','');
+                $this->error('上传失败');
             }
         }
     }

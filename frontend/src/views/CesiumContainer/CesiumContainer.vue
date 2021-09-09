@@ -1,25 +1,21 @@
 <template>
   <div class="home viewer">
-    <vc-viewer @ready="onViewerReady">
-      <vc-entity
-        ref="entity"
-        :billboard="billboard"
-        :position="{ lng: 108, lat: 32 }"
-        :point="point"
-        :label="label"
-        @click="onEntityEvt"
-        @mouseover="onEntityEvt"
-        @mouseout="onEntityEvt"
+    <vc-viewer @ready="onViewerReady" :sceneMode="sceneMode" :showCredit="false">
+      <!-- mapbox矢量底图 -->
+      <vc-layer-imagery
+        :alpha="alpha"
+        :brightness="brightness"
+        :contrast="contrast"
+        :sortOrder="1"
       >
-        <vc-graphics-rectangle
-          :coordinates="[130, 20, 80, 25]"
-          material="green"
-        ></vc-graphics-rectangle>
-      </vc-entity>
-      <vc-layer-imagery>
-        <vc-provider-imagery-osm></vc-provider-imagery-osm>
+        <vc-provider-imagery-mapbox
+          ref="provider"
+          url="https://api.mapbox.com/styles/v1"
+          username="planee"
+          styleId="cksjuob7t9z9618rhpnzh60hd"
+          accessToken="pk.eyJ1IjoicGxhbmVlIiwiYSI6ImNrc2p1bGU0dTBnajMyd3BjbTkxcTN1ZjQifQ.ZvAcVs6HPASbNNnguG41LQ"
+        ></vc-provider-imagery-mapbox>
       </vc-layer-imagery>
-      <vc-navigation></vc-navigation>
     </vc-viewer>
   </div>
 </template>
@@ -41,7 +37,8 @@ export default {
       billboard: {
         image: 'https://zouyaoji.top/vue-cesium/favicon.png',
         scale: 0.5
-      }
+      },
+      sceneMode: 2
     }
   },
   methods: {
@@ -67,6 +64,6 @@ export default {
 </script>
 <style>
 .viewer {
-  height: 100vh;
+  height: 100%;
 }
 </style>

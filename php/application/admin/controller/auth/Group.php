@@ -99,7 +99,8 @@ class Group extends Backend
             $total = count($list);
             $result = array("total" => $total, "rows" => $list);
 
-            return json($result);
+//            return json($result);
+            $this->success('获取成功',$result);
         }
         return $this->view->fetch();
     }
@@ -438,7 +439,7 @@ class Group extends Backend
                     $state = array('selected' => in_array($v['id'], $currentRuleIds) && !in_array($v['id'], $hasChildrens));
                     $nodeList[] = array('id' => $v['id'], 'parent' => $v['pid'] ? $v['pid'] : '#', 'text' => __($v['title']), 'type' => 'menu', 'state' => $state);
                 }
-                $this->success('', null, $nodeList);
+                $this->success('获取成功', $nodeList);
             } else {
                 $this->error(__('Can not change the parent to child'));
             }

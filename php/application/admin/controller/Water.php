@@ -293,7 +293,7 @@ class Water extends Backend
         $list['people'] = $this->cache_group['people'];
         $list['control_level'] = $this->cache_group['control_level'];
         $result = array("total" => $total, "rows" => $rows,'search_list'=>$list);
-        return json($result);
+        $this->success('获取成功',$result);
     }
 
     /**

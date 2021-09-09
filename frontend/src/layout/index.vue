@@ -4,11 +4,14 @@
     <Navbar />
     <!--侧边栏-->
     <!--主体内容-->
-    <div class="main-container">
+    <div v-show="!isShowSliderMenu" class="main-map">
+      <MainMap />
+    </div>
+    <div v-show="isShowSliderMenu" class="main-container">
       <Sidebar />
       <!--顶部导航-->
       <!-- 关闭菜单 -->
-<!--      <TagsView />-->
+      <!--      <TagsView />-->
       <!--主页面-->
       <AppMain />
 
@@ -24,6 +27,7 @@ import Sidebar from './components/Sidebar/index.vue'
 import Navbar from './components/Navbar.vue'
 import TagsView from './components/TagsView/index.vue'
 import AppMain from './components/AppMain.vue'
+import MainMap from '../views/map/mainPageMap.vue'
 
 const route = useRoute()
 const store = useStore()
@@ -31,6 +35,7 @@ const store = useStore()
 const opened = computed(() => store.state.app.sidebar.opened)
 const withoutAnimation = computed(() => store.state.app.sidebar.withoutAnimation)
 const device = computed(() => store.state.app.device)
+const isShowSliderMenu = computed(() => store.state.ui.isShowSliderMenu)
 const classObj = computed(() => {
   return {
     hideSidebar: !opened.value,
@@ -91,13 +96,16 @@ const resizeHandler = () => {
   width: 100%;
   height: 100%;
   overflow: hidden;
-
+  
   &.mobile.openSidebar {
     position: fixed;
     top: 0;
   }
 }
-
+.main-map{
+  height: 100%;
+  width: 100%;
+}
 .drawer-bg {
   position: absolute;
   top: 0;

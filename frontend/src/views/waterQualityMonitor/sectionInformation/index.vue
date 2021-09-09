@@ -3,9 +3,9 @@
     <div class="search-form">
       <el-form :inline="true" :model="formData" class="search-form">
         <el-form-item label="属性">
-          <el-select v-model="formData.attrs" multiple placeholder="请选择">
+          <el-select v-model="formData.river_attribute" multiple placeholder="请选择">
             <el-option
-              v-for="item in options"
+              v-for="item in attrOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -14,12 +14,12 @@
           </el-select>
         </el-form-item>
         <el-form-item label="水域名称">
-          <el-input v-model="formData.name" placeholder="水域名称"></el-input>
+          <el-input v-model="formData.water_name" placeholder="水域名称"></el-input>
         </el-form-item>
         <el-form-item label="河湖长等级">
-          <el-select v-model="formData.level" placeholder="请选择">
+          <el-select v-model="formData.people" placeholder="请选择">
             <el-option
-              v-for="item in options"
+              v-for="item in peopleOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -28,9 +28,9 @@
           </el-select>
         </el-form-item>
         <el-form-item label="监测名称">
-          <el-input v-model="formData.watchName" placeholder="监测名称"></el-input>
+          <el-input v-model="formData.test_name" placeholder="监测名称"></el-input>
         </el-form-item>
-        <el-form-item label="行政区划">
+        <!-- <el-form-item label="行政区划">
           <el-cascader
             v-model="formData.area"
             placeholder="行政区划"
@@ -38,11 +38,11 @@
             clearable
             filterable
           ></el-cascader>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="控制级别">
-          <el-select v-model="formData.controlLevel" placeholder="请选择">
+          <el-select v-model="formData.control_level" placeholder="请选择">
             <el-option
-              v-for="item in options"
+              v-for="item in controlLevelOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -51,9 +51,9 @@
           </el-select>
         </el-form-item>
         <el-form-item label="断面类型">
-          <el-select v-model="formData.sectionType" placeholder="请选择">
+          <el-select v-model="formData.section_type" placeholder="请选择">
             <el-option
-              v-for="item in options"
+              v-for="item in sectionTypeOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -62,15 +62,15 @@
           </el-select>
         </el-form-item>
         <el-form-item label="圈码">
-          <el-input v-model="formData.quanma" placeholder="监测名称"></el-input>
+          <el-input v-model="formData.circle_code" placeholder="监测名称"></el-input>
         </el-form-item>
         <el-form-item label="水质等级">
-          <el-input v-model="formData.waterQualityLevel" placeholder="水质等级"></el-input>
+          <el-input v-model="formData.water_level" placeholder="水质等级"></el-input>
         </el-form-item>
         <el-form-item label="评价断面">
-          <el-select v-model="formData.assessSection" placeholder="请选择">
+          <el-select v-model="formData.evaluate" placeholder="请选择">
             <el-option
-              v-for="item in options"
+              v-for="item in evaluateOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -79,7 +79,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="所在干流">
-          <el-input v-model="formData.addressMainStream" placeholder="所在干流" clearable></el-input>
+          <el-input v-model="formData.river_name" placeholder="所在干流" clearable></el-input>
         </el-form-item>
 
         <!--      <el-form-item label="活动区域">-->
@@ -97,7 +97,7 @@
       </el-form>
     </div>
     <div class="table-main">
-      <table-list></table-list>
+      <table-list :tableData="tableData" :pagination="pagination"></table-list>
     </div>
     <el-dialog
       v-model="importFormData.visible"
@@ -147,43 +147,37 @@ import topicApi from '@/api/topic'
 
 // form
 const defaultFormData = {
-  attrs: [],
-  name: '',
-  level: '',
-  watchName: '',
-  area: '',
-  controlLevel: '',
-  sectionType: '',
-  quanma: '',
-  waterQualityLevel: '',
-  assessSection: '',
-  addressMainStream: ''
+  river_attribute: [],
+  water_name: '',
+  people: '',
+  test_name: '', // 监测名称
+  // area: '',
+  control_level: '',
+  section_type: '',
+  circle_code: '',
+  water_level: '',
+  evaluate: '',
+  river_name: '',
 }
 
 const formData = ref({ ...defaultFormData })
 
-const options = [
-  {
-    value: '选项1',
-    label: '黄金糕'
-  },
-  {
-    value: '选项2',
-    label: '双皮奶'
-  },
-  {
-    value: '选项3',
-    label: '蚵仔煎'
-  },
-  {
-    value: '选项4',
-    label: '龙须面'
-  },
-  {
-    value: '选项5',
-    label: '北京烤鸭'
-  }
-]
+// filter
+const attrOptions = ref([]) // 属性
+const peopleOptions = ref([]) // 河湖长等级
+const controlLevelOptions = ref([]) // 控制级别
+const sectionTypeOptions = ref([]) // 断面类型
+const evaluateOptions = [{value: 1, label: '是'},{value: 2, label: '否'}] // 评价断面
+
+// list
+const tableData = ref([])
+
+const pagination = reactive({
+  total: 0,
+  page: 1,
+  limit: 20,
+})
+
 
 const areaOptions = [
   {
@@ -483,6 +477,8 @@ const rules = {
   ]
 }
 
+
+
 const onImport = () => {
   importFormData.visible = true
   console.log('submit!')
@@ -525,6 +521,24 @@ const handleUploadSuccess = (response, file, fileList) => {
 const handleUploadChange = (file, fileList) => {
   importFormData.file = file
 }
+
+const fetchData = () => {
+  waterApi.list(formData.value).then(res => {
+    const {search_list, rows, total} = res;
+    const {river_attribute,people,control_level,section_type} = search_list || {};
+    attrOptions.value = Object.values(river_attribute).map((v)=>({value:v.id, label: v.value}))
+    peopleOptions.value = Object.values(people).map((v=>({value:v.id, label: v.value})))
+    controlLevelOptions.value = Object.values(control_level).map((v=>({value:v.id, label: v.value})))
+    sectionTypeOptions.value = Object.values(section_type).map((v=>({value:v.id, label: v.value})))
+    tableData.value = rows
+    pagination.total = total
+  })
+}
+
+onMounted(() => {
+  fetchData()
+})
+
 
 </script>
 

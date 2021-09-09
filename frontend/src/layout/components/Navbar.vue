@@ -134,10 +134,9 @@ const loginOut = () => {
   line-height: 91px;
   text-align: center;
   font-weight: 700;
-  font-size: 50px;
+  font-size: 32px;
   color: #fff;
   margin: auto;
-  margin-top: 9px;
 }
 .temperature{
   margin-left: 20px;

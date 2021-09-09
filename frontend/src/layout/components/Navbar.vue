@@ -149,7 +149,7 @@ const loginOut = () => {
   overflow: hidden;
   line-height: 50px;
   height: v-bind('navbarHeight');
-  //background: url("/img/bg.svg");
+  background: url("/img/bg.svg");
   color: #fff;
   border-bottom: none;
   z-index: 999;

@@ -1,7 +1,7 @@
 <template>
   <div class="setting-view">
     <div class="search-form">
-      <el-form :inline="true" :model="formData" class="demo-form-inline">
+      <el-form :inline="true" :model="formData" class="search-form">
         <el-form-item label="属性">
           <el-select v-model="formData.attrs" multiple placeholder="请选择">
             <el-option
@@ -95,29 +95,55 @@
           <el-button type="success" @click="onExport">导出</el-button>
         </el-form-item>
       </el-form>
-      <el-dialog
-        v-model="importDate.visible"
-        title="请先选择日期"
-        width="300px"
-      >
-        <el-date-picker v-model="importDate.value" type="date" placeholder="选择日期"></el-date-picker>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="closeDialog">取 消</el-button>
-            <el-button type="primary" @click="submitImportDate">确 定</el-button>
-          </span>
-        </template>
-      </el-dialog>
     </div>
     <div class="table-main">
       <table-list></table-list>
     </div>
+    <el-dialog
+      v-model="importFormData.visible"
+      title="导入文件"
+      width="30%"
+    >
+      <el-form ref="formRef" :model="importFormData" :rules="rules" label-width="80px">
+        <el-form-item prop="explode_date" label="日期" required>
+          <el-date-picker
+            v-model="importFormData.explode_date"
+            type="date"
+            value-format="YYYY-MM-DD"
+            placeholder="选择日期"
+          >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item prop="file" label="文件" required>
+          <el-upload
+            ref="uploadRef"
+            action="/api/water/import"
+            :data="importFormData"
+            :auto-upload="false"
+            :limit="1"
+            :on-success="handleUploadSuccess"
+            :on-change="handleUploadChange"
+          >
+            <i class="el-icon-plus"></i>
+          </el-upload>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="closeDialog">取 消</el-button>
+          <el-button type="primary" @click="submitImportDate">确 定</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
+import waterApi from '@/api/water'
+import { downloadFile } from '@/utils/util'
 import TableList from './tableList.vue'
 import { ElMessage } from 'element-plus'
+import topicApi from '@/api/topic'
 
 // form
 const defaultFormData = {
@@ -430,32 +456,74 @@ const areaOptions = [
 
 const onSubmit = () => {
   console.log('submit!')
+  waterApi.list(formData.value).then(res => {
+    console.log(res)
+  })
 }
 const onClear = () => {
   formData.value = { ...defaultFormData }
 }
+
+// import
+const formRef = ref(null)
+const uploadRef = ref(null)
+const validateFile = (rule, value, callback) => {
+  if (!importFormData.file) {
+    callback(new Error('请选择文件'))
+  } else {
+    callback()
+  }
+}
+const rules = {
+  explode_date: [
+    { required: true, message: '请选择日期', trigger: 'blur' }
+  ],
+  file: [
+    { validator: validateFile, message: '请选择日期', trigger: ['blur', 'change'] }
+  ]
+}
+
 const onImport = () => {
-  importDate.visible = true
+  importFormData.visible = true
   console.log('submit!')
 }
 const onExport = () => {
+  waterApi.export(formData.value).then(res => {
+    const url = URL.createObjectURL(res)
+    downloadFile(url, 'xx.xlsx')
+  })
   console.log('submit!')
 }
 
 // dialog
-const importDate = reactive({
-  value: '',
+const importFormData = reactive({
+  explode_date: '',
+  file: '',
   visible: false
 })
 const closeDialog = () => {
-  importDate.visible = false
+  importFormData.visible = false
 }
 const submitImportDate = () => {
-  if (!importDate.value) {
-    ElMessage.warning('请选择日期')
-  } else {
-    closeDialog()
-  }
+  formRef.value.validate((valid) => {
+    if (valid) {
+      const formdata = new FormData()
+      formdata.append('file', uploadRef.value.uploadFiles[0].raw)
+      formdata.append('explode_date', importFormData.explode_date)
+      waterApi.import(formdata).then(res => {
+        ElMessage.success('导入成功')
+        closeDialog()
+      })
+    }
+  })
+}
+const handleUploadSuccess = (response, file, fileList) => {
+  // const data = response.data
+  // const imgUrl = 'http://' + data.domain + data.filepath
+  // formData.mon_images.push(imgUrl)
+}
+const handleUploadChange = (file, fileList) => {
+  importFormData.file = file
 }
 
 </script>
@@ -463,6 +531,5 @@ const submitImportDate = () => {
 <style lang="scss" scoped>
 .setting-view {
   margin-bottom: 10px;
-  margin-top: -50px;
 }
 </style>

@@ -1,17 +1,17 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
     <div class="layout-slide">
-      <!--      <div class="left-nav layout-items-center">-->
-      <!--        <div class="nav-date">{{ nowDate }}</div>-->
-      <!--        <div class="weather-box layout-items-center">-->
-      <!--          <div class="temperature">32 °C</div>-->
-      <!--          <div class="weather">-->
-      <!--            <div class="">雷阵雨</div>-->
-      <!--            <div class="">东北风1-2级</div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--      </div>-->
-      <!--      <div class="navbar-title">江北区智慧河长监管平台</div>-->
+      <div class="left-nav layout-items-center">
+        <div class="nav-date">{{ nowDate }}</div>
+        <div class="weather-box layout-items-center">
+          <div class="temperature">32 °C</div>
+          <div class="weather">
+            <div class="">雷阵雨</div>
+            <div class="">东北风1-2级</div>
+          </div>
+        </div>
+      </div>
+      <div class="navbar-title">江北区智慧河长监管平台</div>
       <!--    <Hamburger class="hamburger-container" :is-active="opened" @toggleClick="toggleSideBar" />-->
       <!--    <Breadcrumb class="breadcrumb-container" />-->
       <div class="right-menu">
@@ -122,7 +122,7 @@ const loginOut = () => {
 }
 
 .navbar-title{
-  //background-color: rgba(15, 41, 91, 1);
+  background-color: rgba(15, 41, 91, 1);
   //width: 657px;
   height: 91px;
   line-height: 91px;
@@ -143,7 +143,7 @@ const loginOut = () => {
   overflow: hidden;
   line-height: 50px;
   height: 180px;
-  //background: url("/img/bg.svg");
+  background: url("/img/bg.svg");
   color: #fff;
   border-bottom: none;
 

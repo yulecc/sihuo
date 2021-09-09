@@ -6,6 +6,16 @@ const getQueryStringByName = function (name) {
   return result[1]
 }
 
+const downloadFile = function (href, filename = '') {
+  const download = document.createElement('a')
+  download.download = filename
+  download.style.display = 'none'
+  download.href = href
+  document.body.appendChild(download)
+  download.click()
+  document.body.removeChild(download)
+}
+
 const transformData = function (data) {
   const params = new FormData()
   for (const item in data) {
@@ -40,4 +50,4 @@ const DateFormat = function (date, fmt) {
   return fmt
 }
 
-export { getQueryStringByName, transformData, DateFormat }
+export { getQueryStringByName, transformData, DateFormat, downloadFile }

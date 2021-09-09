@@ -34,12 +34,17 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   (response) => {
+    console.log(response)
     const res = response.data
+    if (response.request.responseType === 'blob') {
+      return res
+    }
     if (res.code !== 1) {
       ElMessage({
         type: 'error',
         message: res.msg
       })
+      return Promise.reject()
     }
     return res.data
   },
